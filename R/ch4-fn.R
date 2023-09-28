@@ -2705,8 +2705,16 @@ Simp.inv <- function(expx, v0="xx", t0="yy") {
         res <- res[1]
   # Functional expx
     } else if (nn==2) {
-        res <- Sinv.fn(dd[1], var=res[1])
-        res <- Simp.inv(dd[2], var=res[1])
+        ## res <- Sinv.fn(dd[1], var=res[1])
+        ## res <- Simp.inv(dd[2], var=res[1]) # [Removed: 2023.09.28]
+        ## [Added: 2023.09.28]
+        trans <- Sinv.fn(dd[1], var=res[1])
+        dd2 <- as.character(body(str2fn(dd[2], v0)))
+        if (length(dd2) == 1) {
+            res <- trans
+        } else {
+            res <- Simp.inv(dd[2], t0=trans)
+        }
   # Operational expx
     } else if (nn==3) {
         mm <- grep(v0, dd)
@@ -2723,6 +2731,7 @@ Simp.inv <- function(expx, v0="xx", t0="yy") {
             res <- c(res1, res2)
         }
     }
+    res <- remove.par(res)  ## [Added: 2023.09.28]
     return(res)
 }
 
@@ -2866,3 +2875,19 @@ Tr.cdf <- function(fun, low, itrf, vn="x", v2n="y") {
     }
     Sim.str(out)
 }
+
+# Remove Redundant Parentheses ## [Added: 2023.09.28]
+rem.paren <- function(ex)
+{
+    if( mode(ex) %in% c("name","numeric") ) return(ex)
+
+    op <- as.character(ex[[1]])
+    if( op %in% c("exp", "log", "abs", "sqrt") ) 
+                return(call(op, rem.paren(ex[[2]])))
+    if( op == "(" ) return(rem.paren(ex[[2]]))
+
+    if( op %in% c("+","-","*","/","^") ) 
+                return(call(op, rem.paren(ex[[2]]), rem.paren(ex[[3]])))
+}
+
+remove.par <- function(s) deparse(rem.paren(parse(text=s)[[1]]))
