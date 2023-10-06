@@ -501,7 +501,6 @@ lln.coin <- function(pr=0.5, np=30, nmax=100, int=0.01, ws=c(7,4), col="blue") {
 #' pprt2(B, An="Sum >= 8", nrow(S))
 #' 
 #' S <- tosscoin2(4)
-#' S <- S[order(S[1], S[2], S[3], S[4]), ]
 #' A <- subset(S, apply(S, 1, function(x) sum(x=="H") >=2))
 #' pprt(A, nrow(S))
 #' pprt2(A, "Heads >= 2", nrow(S))
@@ -655,22 +654,22 @@ cprt2 <- function(A, An, B, Bn, prt=TRUE, dig=0) {
 }
 
 # [3-5B] Calculate the Conditional Probability
-#' @title Conditional Probability for the Events from Sequential Experments
-#' @description Calculating the Conditional Probability
-#' @param a Event in the entire experiment.
-#' @param N1 The size of the sample space of the entire experiment.
-#' @param b Event in the initial experiment.
-#' @param N2 The size of the sample space of the initial experiment.
-#' @param prt Logical value for printing detailed output, Default: TRUE.
-#' @param dig The number of decimal places, Default: 0 (fraction).
-#' @return The conditional probability.
-#' @examples 
-#' S <- rolldie2(2)
-#' A <- subset(S, (X1==6 | X2==6))
-#' B <- subset(S, (X1+X2) >=8)
-#' cprt(B, A)
-#' @rdname cprt3
-#' @export 
+# title Conditional Probability for the Events from Sequential Experments
+# description Calculating the Conditional Probability
+# param a Event in the entire experiment.
+# param N1 The size of the sample space of the entire experiment.
+# param b Event in the initial experiment.
+# param N2 The size of the sample space of the initial experiment.
+# param prt Logical value for printing detailed output, Default: TRUE.
+# param dig The number of decimal places, Default: 0 (fraction).
+# return The conditional probability.
+# examples 
+# S <- rolldie2(2)
+# A <- subset(S, (X1==6 | X2==6))
+# B <- subset(S, (X1+X2) >=8)
+# cprt(B, A)
+# rdname cprt3
+# export 
 cprt3 <- function(A, N1, B, N2, prt=TRUE, dig=0) {
     if (missing(N1)) stop("Input the size of the entire sample sapce!")
     if (missing(N2)) stop("Input the size of the initial sample sapce!")
@@ -733,11 +732,12 @@ cprt3 <- function(A, N1, B, N2, prt=TRUE, dig=0) {
 #' @param err Error limit for probability calculation, Default: 1e-06.
 #' @return Probablities to be compared.
 #' @examples 
+#' # Three dice: Independence of A (even sum) and B (range of 5)
 #' S <- rolldie2(3); (N <- nrow(S))
 #' even <- function(x) (sum(x)%%2)==0
 #' span5 <- function(x) (max(x)-min(x))==5
-#' A <- subset(S, apply(S,1,even)); nrow(A)
-#' B <- subset(S, apply(S,1,span5)); nrow(B)
+#' A <- subset(S, apply(S, 1, even)); nrow(A)
+#' B <- subset(S, apply(S, 1, span5)); nrow(B)
 #' indep.event(A, B, nrow(S))
 #' @rdname indep.event
 #' @export
@@ -874,8 +874,10 @@ indep.event <- function(X, Y, N, prt=TRUE, dig=0, err=1E-6) {
 #' @examples 
 #' prior <- c(0.2, 0.4, 0.3, 0.1)
 #' cond <- c(0.04, 0.02, 0.01, 0.05)
+#' # Direct way
 #' bayes.plot(prior, cond)
 #' tot <- prior*cond
+#' # Using posterior probabilities
 #' post <- tot / sum(tot)
 #' bayes.plot(prior, post=post)
 #' @rdname bayes.plot

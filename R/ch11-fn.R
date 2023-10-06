@@ -420,7 +420,7 @@ prop2.test <- function(x, y, n1, n2, alt="two", alp=0.05, d0=0, dig=4, ws=c(7,4)
         pv <- pnorm(z0)
         cat("P-v = P(Z<Z0) =", myf1(pv), "\n")
     } else if (nalt==3) {
-        pv <- 2*pnorm(z0)
+        pv <- 2*pnorm(-abs(z0))
         cat("P-v = 2P(Z>|Z0|) =", myf1(pv), "\n")
     }
 
@@ -572,7 +572,7 @@ ftest.plot <- function(F0, df, nalt, dig=4, leg, ...) {
 #'
 #' set.seed(1234)
 #' x <- rnorm(20, 199, 4)
-#' y <- rnorm(25, 200, 2)
+#' y <- rnorm(25, 200, 3)
 #' var2.test(x, y)
 #' var2.test(x, y, alt="gr")
 #' var2.test(var(x), var(y), length(x), length(y), alt="gr")
@@ -692,7 +692,7 @@ var2.test <- function(x, y, n1, n2, alp=0.05, alt="two", dig=4, ws=c(7,4), ...) 
 #' @examples
 #' civar2.sim(n1=25, n2=16)
 #' civar2.sim(var1=8, var2=2, n1=25, n2=16)
-#' civar2.sim(var1=8, var2=2, n1=25, n2=16, N=10000, plot=F)
+#' civar2.sim(var1=8, var2=2, n1=25, n2=16, N=10000, ws="n")
 #' @rdname civar2.sim
 #' @export
 civar2.sim <- function(var1, var2, n1, n2, alp=0.05, N=100, seed=9857, dig=4, ws=c(7,4)) {

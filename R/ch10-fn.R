@@ -146,21 +146,21 @@ alt.num <- function(alt) {
 #' @return Summary Statistics.
 #'
 #' @examples
-#' 95%-CI, known sigma
+#' # 95%-CI, known sigma
 #' mean1.test(199.5, sig=5, n=50)
-#' 95%-CI, unknown sigma
+#' # 95%-CI, unknown sigma
 #' mean1.test(199.5, ss=5, n=50)
 #'
-#' H0: mu>12.5, known sigma
+#' # H0: mu>12.5, known sigma
 #' mean1.test(x=12.64, mu0=12.5, alt="gr", sig=0.5, n=40)
-#' H0: mu>12.5, unknown sigma
+#' # H0: mu>12.5, unknown sigma
 #' mean1.test(x=12.64, mu0=12.5, alt="gr", ss=0.5, n=40)
 #'
 #' set.seed(1234)
 #' x <- rnorm(40, 12.64, 0.5)
-#' H0: mu != 12.5, unknown sigma
+#' # H0: mu != 12.5, unknown sigma
 #' mean1.test(x, mu0=12.5)
-#' H0: mu < 12.5, unknown sigma
+#' # H0: mu < 12.5, unknown sigma
 #' mean1.test(x, mu0=12.5, alt="le")
 #'
 #' @rdname mean1.test
@@ -689,7 +689,7 @@ var1.test <- function(x, n, var0, alt="two", alp=0.05, dig=4, ws=c(7,4), ...) {
             2*min(pchisq(chi0, df), pchisq(chi0, df, lower=F)) )
         fpv <- switch(nalt, paste0("P(X<", myf0(chi0), ")"), 
                   paste0("P(X>", myf0(chi0), ")"),
-               paste0("2 \U00D7 [P(X<", myf0(chi0), "), P(X>", myf0(chi0), ")]") )
+               paste0("2 \U00D7 min[P(X<", myf0(chi0), "), P(X>", myf0(chi0), ")]") )
 
         cat(paste0("Chi0 = ", df, " \U00D7 ", myf1(xva), " / ", var0, " = ",
             myf1(chi0), "\n=> P-v = ", fpv, " = ", myf1(pv)), "\n")
@@ -804,7 +804,7 @@ var1.test <- function(x, n, var0, alt="two", alp=0.05, dig=4, ws=c(7,4), ...) {
 #'
 #' @examples
 #' cimean.sim(n=16, mu=10, sig=2)
-#' cimean.sim(n=16, mu=10, sig=2, N=10000, plot=FALSE)
+#' cimean.sim(n=16, mu=10, sig=2, N=10000, ws="n")
 #' @rdname cimean.sim
 #' @export
 cimean.sim <- function(n, mu=0, sig=1, alp=0.05, N=100, seed=9857, ws=c(7,4)) {
@@ -865,7 +865,7 @@ cimean.sim <- function(n, mu=0, sig=1, alp=0.05, N=100, seed=9857, ws=c(7,4)) {
 #'
 #' @examples
 #' civar.sim(n=16, mu=10, sig=2)
-#' civar.sim(n=16, mu=10, sig=2, N=10000, plot=FALSE)
+#' civar.sim(n=16, mu=10, sig=2, N=10000, ws="n")
 #' @rdname civar.sim
 #' @export
 civar.sim <- function(n, mu=0, sig=1, alp=0.05, N=100, seed=9857, ws=c(7,4)) {
@@ -927,9 +927,9 @@ civar.sim <- function(n, mu=0, sig=1, alp=0.05, N=100, seed=9857, ws=c(7,4)) {
 #'
 #' @examples
 #' ciprop.sim(n=16, p=0.6, alp=0.05, N=100)
-#' ciprop.sim(n=16, p=0.6, alp=0.05, N=10000, plot=FALSE)
+#' ciprop.sim(n=16, p=0.6, alp=0.05, N=10000, ws="n")
 #'
-#' ciprop.sim(n=100, p=0.6, alp=0.05, N=10000, plot=FALSE)
+#' ciprop.sim(n=100, p=0.6, alp=0.05, N=10000, ws="n")
 #' @rdname ciprop.sim
 #' @export
 ciprop.sim <- function(n, p=0.5, alp=0.05, N=100, seed=9857, ws=c(7,4), method="norm") {
@@ -994,7 +994,7 @@ ciprop.sim <- function(n, p=0.5, alp=0.05, N=100, seed=9857, ws=c(7,4), method="
 #' @param mu1 Population mean under H1.
 #' @param sig Population standard deviation, Default: 1.
 #' @param nv Sample size vector, Default: c(10,30,50,100).
-#' @param alt Type of the alternative hypothesis ("gr", "le", "two").
+#' @param alt Type of the alternative hypothesis ("two", "gr", "le").
 #' @param pwr Logical: apply power function? (o.w. OC curve) Default: TRUE.
 #' @param alp Level of significance, Default: 0.05.
 #' @param dig Number of decimal places, Default: 4.
@@ -1019,17 +1019,17 @@ ciprop.sim <- function(n, p=0.5, alp=0.05, N=100, seed=9857, ws=c(7,4), method="
 #'
 #' @rdname power.plot
 #' @export
-power.plot <- function(mu0, mu1, sig, nv, alt, alp=0.05, pwr=TRUE, dig=4, ws=c(7,4), ...) {
+power.plot <- function(mu0, mu1, sig, nv, 
+                  alt, alp=0.05, pwr=TRUE, dig=4, ws=c(7,4), ...) {
     myf0 <- function(x) round(x, dig)
     myf1 <- function(x) format(round(x, dig), nsmall=dig)
 
   # Type of the alternative hypothesis
     nalt <- alt.num(alt)
   # Set plot variables
-    if (missing(mu0)) {mu0 <- 0
-        cat("Since mu0 is missing, it is automatically set to 0.\n")}
-    if (missing(sig)) {sig <- 1
-        cat("Since sig is missing, it is automatically set to 1.\n")}
+    if (missing(mu0)) mu0 <- 0
+    if (missing(sig)) sig <- 1
+    if (missing(alt)) alt <- "two"
     if (missing(nv)) nv <- c(10, 30, 50, 100)
     nn <- length(nv)
     se0 <- sig/sqrt(min(nv))

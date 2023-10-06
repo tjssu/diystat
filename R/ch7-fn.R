@@ -184,17 +184,18 @@ cdist.exp <- function(distnum, para1, para2, Tr, prt="var", dig=4) {
 #'
 #' @return list(fun, Ex, Vx, Tfun, Ey, Vy)
 #' @examples
+#' # X ~ U(0,1), Y = X^2
 #' cont.dist("unif", 0, 1, Tr="x^2", prt="var", ws=c(9,4))
-#'
+#' # X ~ Exp(5), Y = 2X+4
 #' cont.dist("exp", 5, Tr="2*x+4", prt="var", ws=c(9,4))
-#'
+#' # X ~ Gamma(2,5), Y = 2(X-5)
 #' cont.dist("gamma", 2, 5, Tr="2*(x-5)", prt="var", ws=c(9,4))
-#'
+#' # X ~ Weibull(2,5), Y = X^2
 #' cont.dist("weib", 2, 5, Tr="x^2", prt="var", ws=c(9,4))
-#'
+#' # X ~ Beta(2,5), Y = 2+4X
 #' cont.dist("beta", 2, 5, Tr="2+4*x", prt="var", ws=c(9,4))
 #'
-#' @rdname cont.mpdf
+#' @rdname cont.dist
 #' @export
 cont.dist <- function(dist, para1, para2, Tr, prt="var", dig=4, ws="n", ...) {
 
@@ -472,15 +473,16 @@ getdf2 <- function(dist, xa, para, para2) {
 #'
 #' @return None.
 #' @examples
+#' # Five exponential PDFs
 #' lamb <- 1:5
 #' cont.mpdf("exp", para1=lamb, xlim=3, ymax=5)
-#'
+#' # Four gamma PDFs
 #' alp <- c(0.5, 1, 2, 3); rate <- 1
 #' cont.mpdf("gamma", alp, rate, xlim=8, ymax=1.2)
-#'
+#' # Four Weibull PDFs
 #' th <- 1; alp <- c(0.5, 1, 2, 3)
 #' cont.mpdf("weibull", alp, th, 5, 1.2)
-#'
+#' # PDFs with rainbow colors
 #' alp <- 10:100/10; th <- 1
 #' cont.mpdf("gamma", alp, th, 20)
 #' cont.mpdf("weibull", alp, th, 5)

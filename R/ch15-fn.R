@@ -1135,10 +1135,13 @@ ranksum.tsp <- function(x, y, alt="two", dig=4, ws=c(7,4)) {
 #' @param ws Graphic window size, Default: c(7,4).
 #' @param sep Logical: plot in separate facets? Default: FALSE.
 #' @return None.
-#'
+#' 
 #' @examples
 #' signrank.dist(nv=5:15)
 #' signrank.dist(nv=c(5,7,10,20))
+#' # Quantile tables
+#' signrank.dist(nv=5:15, pp=c(0.95, 0.975))
+#' signrank.dist(nv=c(5,7,10,20), pp=c(0.95, 0.975, 0.99, 0.995))
 #' @rdname signrank.dist
 #' @export
 signrank.dist <- function(nv=5:10, alp, ws=c(7,4), sep=FALSE, pp) {

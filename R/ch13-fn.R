@@ -1091,7 +1091,7 @@ anova2.conf <- function(f, data, alp=0.05, maxim=TRUE, dig=4, ws=c(7,4), main)
 #' Press.f <- as.factor(Press1)
 #' ff <- aov(Yield1 ~ Temp.f + Press.f)
 #' anova2.diff(ff)
-#' @rdname anova2.conf
+#' @rdname anova2.diff
 #' @export
 
 anova2.diff <- function(f, data, alp=0.05, ci="pair", sel="h4", dig=4, ws=c(7,4), main)

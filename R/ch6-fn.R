@@ -572,9 +572,11 @@ disc.mexp <- function(xv, fx, fx2, fx3, prt="var", dig=4, ws="n", del=0.2, ...) 
 #' @param ... Other graphic parameters.
 #' @return Matrix of multinomial PDF
 #' @examples
-#' library(scatterplot3d)
+#' Comparing four multinomial distributions
 #' ps <- matrix(c(1,1,8, 1,5,4, 4,4,2, 1,1,1), nrow=4, ncol=3, byrow=T)
 #' multinom.plot(ps, 5)
+#' multinom.plot(ps, 5, prt="var")
+#' multinom.plot(ps, 5, prt="n", ws=c(7,6))
 #' @rdname multinom.plot
 #' @export
 multinom.plot <- function(ps, size, lb, ub, prt="exp", dig=4, ws="n", ...) {

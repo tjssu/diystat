@@ -158,11 +158,16 @@ prt.div2 <- function(str, M=80, H=7, spl="\\)", sph="-") {
 #' @examples
 #' S <- tosscoin2(10)
 #' X <- apply(S,1,\(x) sum(x=="H"))
+#' # Using the raw random variable
+#' disc.exp(X, ws=c(7,4))
+#' # Using the frequency table
 #' x <- table(X)
 #' disc.exp(x, ws=c(7,4))
-#'
+#' 
+#' # Using the PDF: B(20, 0.5)
 #' x <- (0:20); y <- x^2
-#' disc.exp(dbinom(x, 20, 0.5), y, prt="var", ws=c(7,4), cex=0.6)
+#' fun <- function(v) dbinom(v, 20, 0.5)
+#' disc.exp(fun, x, y, prt="var", ws=c(7,4), cex=0.6)
 #' @rdname disc.exp
 #' @export
 disc.exp <- function(xf, xv, Tr, prt="exp", dig=4, ws="n", ...) {
@@ -708,16 +713,20 @@ Tr.pdf <- function(fx, lb, ub, Vn, var, Tr, Tvar, debug=FALSE) {
 #' @param ... Other graphic parameters.
 #' @return list(EX=E(X), VX=Var(X))
 #' @examples
+#' # Using the PDF
 #' pdf <- function(x) exp(-2*x)*(x>0)
 #' cont.exp(pdf, prt="var")
-#'
+#' # Using the string PDF with a lower bound
 #' cont.exp("2*exp(-2*x)", lb=0, prt="var")
 #'
+#' # Using the string PDF with a two-sided bound
 #' cont.exp("2*y", lb=0, ub=1, prt="var")
 #'
+#' # Using the string of built-in PDF
 #' cont.exp("dnorm(x, 10, 3)", prt="var")
 #' cont.exp(\(x) dnorm(x, 10, 3), prt="var")
 #'
+#' # Applying transformation
 #' y="x^2"; cont.exp("dnorm(x)", Tr=y, prt="var")
 #'
 #' @rdname cont.exp
@@ -1381,7 +1390,8 @@ cont.jexp <- function(fun, lb, ub, y1, y2, Tr, prt="exp", dig=4, frac=FALSE) {
     if (abs(prob-1) > err) {
         coef <- MASS::fractions(1/prob)
         cfxy <- paste0(coef, "*(", cfxy, ")")
-        cat(paste("Coef =", coef, " =>  f(x,y) =", cfxy), "\n")
+        pcfxy <- remove.par(cfxy)
+        cat(paste("Coef =", coef, " =>  f(x,y) =", pcfxy), "\n")
     }
 
   # Create the joint PDF and moment functions
@@ -1448,20 +1458,22 @@ cont.jexp <- function(fun, lb, ub, y1, y2, Tr, prt="exp", dig=4, frac=FALSE) {
             if (nchar(mix11)>80) dix11 <- prt.div2(dix11,75)
             if (nchar(miy11)>80) diy11 <- prt.div2(diy11,75)
 
-            cat(paste0("E(X) = ", pint, cex1, "}dy dx",
+            pcex1 <- remove.par(cex1)
+            pcey1 <- remove.par(cey1)
+            cat(paste0("E(X) = ", pint, pcex1, "}dy dx",
                 "\n", mix11, "\n", dix11, 
                 "\n     = ", fix12, bound2,
                 "\n     = ", uix12, "-", ndsp(lix12)), 
                 "=", round(Ex1, dig), "\n")
-            cat(paste0("E(Y) = ", pint, cey1, "}dy dx",
+            cat(paste0("E(Y) = ", pint, pcey1, "}dy dx",
                 "\n", miy11, "\n", diy11, 
                 "\n     = ", fiy12, bound2,
                 "\n     = ", uiy12, "-", ndsp(liy12)), 
                 "=", round(Ey1, dig), "\n")
         } else {
-            cat(paste0("E(X) = ", pint, cex1, "}dy dx"),
+            cat(paste0("E(X) = ", pint, pcex1, "}dy dx"),
                 "=", round(Ex1, dig), "\n")
-            cat(paste0("E(Y) = ", pint, cey1, "}dy dx"),
+            cat(paste0("E(Y) = ", pint, pcey1, "}dy dx"),
                 "=", round(Ey1, dig), "\n")
         }
     }
@@ -1495,20 +1507,22 @@ cont.jexp <- function(fun, lb, ub, y1, y2, Tr, prt="exp", dig=4, frac=FALSE) {
             if (nchar(mix21)>80) dix21 <- prt.div2(dix21,75)
             if (nchar(miy21)>80) diy21 <- prt.div2(diy21,75)
 
-            cat(paste0("E(X\U00B2) = ", pint, cex2, "}dy dx",
+            pcex2 <- remove.par(cex2)
+            pcey2 <- remove.par(cey2)
+            cat(paste0("E(X\U00B2) = ", pint, pcex2, "}dy dx",
                 "\n", mix21, "\n", dix21, 
                 "\n      = ", fix22, bound2,
                 "\n      = ", uix22, "-", ndsp(lix22)), 
                 "=", round(Ex2, dig), "\n")
-            cat(paste0("E(Y\U00B2) = ", pint, cey2, "}dy dx",
+            cat(paste0("E(Y\U00B2) = ", pint, pcey2, "}dy dx",
                 "\n", miy21, "\n", diy21, 
                 "\n      = ", fiy22, bound2,
                 "\n      = ", uiy22, "-", ndsp(liy22)), 
                 "=", round(Ey2, dig), "\n")
         } else {
-            cat(paste0("E(X\U00B2) = ", pint, cex2, "}dy dx"),
+            cat(paste0("E(X\U00B2) = ", pint, pcex2, "}dy dx"),
                 "=", round(Ex2, dig), "\n")
-            cat(paste0("E(Y\U00B2) = ", pint, cey2, "}dy dx"),
+            cat(paste0("E(Y\U00B2) = ", pint, pcey2, "}dy dx"),
                 "=", round(Ey2, dig), "\n")
         }
         cat(paste0("Var(X) = ", round(Ex2,dig), " - ", round(abs(Ex1),dig), 
@@ -1518,6 +1532,8 @@ cont.jexp <- function(fun, lb, ub, y1, y2, Tr, prt="exp", dig=4, frac=FALSE) {
     }
     if (prt %in% c("cov", "cor")) {
         fixy1 <- Int0.str(cexy, "y")
+        pcexy <- remove.par(cexy)
+
         if (all(c(!Builtin, !is.na(fixy1), prt=="cov", !Do.tr))) {
             lixy1 <- gsub("y", y1, fixy1)
             uixy1 <- gsub("y", y2, fixy1)
@@ -1534,13 +1550,13 @@ cont.jexp <- function(fun, lb, ub, y1, y2, Tr, prt="exp", dig=4, frac=FALSE) {
             dixy1 <- paste0("      = ", pint1, "{", vixy1, "}dx")
             if (nchar(mixy1)>80) dixy1 <- prt.div2(dixy1,75)
 
-            cat(paste0("E(XY) = ", pint, cexy, "}dy dx",
+            cat(paste0("E(XY) = ", pint, pcexy, "}dy dx",
                 "\n", mixy1, "\n", dixy1,
                 "\n      = ", fixy2, bound2,
                 "\n      = ", uixy2, "-", ndsp(lixy2)), 
                 "=", round(Exy, dig), "\n")
         } else {
-            cat(paste0("E(XY) = ", pint, cexy, "}dy dx"),
+            cat(paste0("E(XY) = ", pint, pcexy, "}dy dx"),
                 "=", round(Exy, dig), "\n")
         }
         cat(paste0("Cov(X,Y) = ", round(Exy,dig), " - (", round(Ex1,dig), 
@@ -1569,6 +1585,7 @@ cont.jexp <- function(fun, lb, ub, y1, y2, Tr, prt="exp", dig=4, frac=FALSE) {
 
     if (Do.tr && prt %in% c("exp", "var")) {
         fiT1 <- Int0.str(ceT, "y")
+        pceT <- remove.par(ceT)
 
         if (!Builtin && !is.na(fiT1)) {
             liT1 <- ifelse(y1==-Inf, 0, gsub("y", y1, fiT1))
@@ -1589,17 +1606,18 @@ cont.jexp <- function(fun, lb, ub, y1, y2, Tr, prt="exp", dig=4, frac=FALSE) {
             wiT1 <- paste0("     = ", fiT2, bound2)
             if (nchar(wiT1)>80) wiT1 <- prt.div2(wiT1,75)
 
-            cat(paste0("E(", Tn, ") = ", pint, ceT, "}dy dx",
+            cat(paste0("E(", Tn, ") = ", pint, pceT, "}dy dx",
                 "\n", miT1, "\n", diT1, "\n", wiT1, 
                 "\n     = ", uiT2, "-", ndsp(liT2)), 
                 "=", round(ET, dig), "\n")
         } else {
-            cat(paste0("E(", Tn, ") = ", pint, ceT, "}dy dx"),
+            cat(paste0("E(", Tn, ") = ", pint, pceT, "}dy dx"),
                 "=", round(ET, dig), "\n")
         }
     }
     if (Do.tr && prt == "var") {
         giT1 <- Int0.str(ceT2, "y")
+        pceT2 <- remove.par(ceT2)
 
         if (!Builtin && !is.na(giT1)) {
             liT1 <- ifelse(y1==-Inf, 0, gsub("y", y1, giT1))
@@ -1621,12 +1639,12 @@ cont.jexp <- function(fun, lb, ub, y1, y2, Tr, prt="exp", dig=4, frac=FALSE) {
             if (nchar(wiT1)>80) wiT1 <- prt.div2(wiT1,75)
 
             oTn <- ifelse(nchar(Tn)>2, paste0("{",Tn,"}"), Tn)
-            cat(paste0("E(", oTn, "\U00B2) = ", pint, ceT2, "}dy dx",
+            cat(paste0("E(", oTn, "\U00B2) = ", pint, pceT2, "}dy dx",
                 "\n", miT1, "\n", diT1, "\n", wiT1, 
                 "\n     = ", uiT2, "-", ndsp(liT2)), 
                 "=", round(ET2, dig), "\n")
         } else {
-            cat(paste0("E(", oTn, "\U00B2) = ", pint, ceT2, "}dy dx"),
+            cat(paste0("E(", oTn, "\U00B2) = ", pint, pceT2, "}dy dx"),
                 "=", round(ET2, dig), "\n")
         }
         cat(paste0("Var(",Tn,") = ", round(ET2,dig), " - ", round(abs(ET),dig), 
@@ -2074,13 +2092,15 @@ panel.hist <- function(x, ...){
 #' @param ... Othe graphic parameters.
 #' @return Corr(X,Y) table.
 #' @examples
-#' S <- prob::rolldie(3)
+#' # Rolling three dice: (Sum, Range, Max, Min)
+#' S <- rolldie2(3)
 #' X = data.frame(Sum=apply(S, 1, sum), 
 #'                Range=apply(S, 1, \(x) max(x)-min(x)),
 #'                Max=apply(S, 1, max), 
 #'                Min=apply(S, 1, min))
 #' mult.corr(X, ws=c(7,6))
 #' 
+#' # "mtcars" data set: (mpg, disp, hp, drat, wt, qsec)
 #' select = c("mpg", "disp", "hp", "drat", "wt", "qsec")
 #' mult.corr(mtcars, select, ws=c(7,6))
 #' @rdname mult.corr

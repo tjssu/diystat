@@ -668,6 +668,7 @@ cont.cdf <- function(fun, lb, ub, xp, prt=FALSE, dig=4, ws=c(7,5), xlim, ...) {
 #' @param ... Other graphic parameters.
 #' @return Table of P(X<bb), P(X<aa), and P(aa<X<bb).
 #' @examples
+#' # f(x) = 2*exp(-2*x) for (x>0)
 #' pdf <- function(x) 2*exp(-2*x)*(x>0)
 #' cont.prob(pdf, aa=c(0.2,0.7), bb=c(0.5,1))
 #' cont.prob(pdf, aa=c(0.2,0.7), bb=c(0.5,1), prt=FALSE, ws=c(7,4))
@@ -680,7 +681,7 @@ cont.cdf <- function(fun, lb, ub, xp, prt=FALSE, dig=4, ws=c(7,5), xlim, ...) {
 #' cont.prob("dnorm(x,10,2)", aa=1:3*4, bb=1:3*4+3, ws=c(7,4))
 #' cont.prob("dexp(x)", aa=1:3*0.4, bb=1:3*0.4+0.3, prt=TRUE, ws=c(7,4))
 #'
-#' @rdname cont.cdf
+#' @rdname cont.prob
 #' @export
 cont.prob <- function(fun, aa, bb, lb, ub, prt=TRUE, dig=4, ws="n", xlim, ...) {
   # Check input
@@ -803,10 +804,7 @@ cont.prob <- function(fun, aa, bb, lb, ub, prt=TRUE, dig=4, ws="n", xlim, ...) {
 #' tab = outer(x, y, fxy)
 #' dimnames(tab) <- list(X=x, Y=y)
 #' disc.jpdf(tab, ws=c(7,5))
-#' # Normalize the PDF
-#' pdf = function(x, y) (x^2+y)/115
-#' disc.jpdf(x, y, pdf, ws=c(7,5))
-
+#'
 #' # Marginal
 #' disc.jpdf(tab, type="m", ws=c(7,5))
 #' # Conditional
@@ -887,8 +885,12 @@ disc.jpdf <- function(X, Y, FUN, type="j", xc, yc,
       pm <- par()$mar
       mrat <- ws[2]/ws[1]
       if (ws[1] > ws[2]) par(mar=pm*c(mrat,1,mrat,1))
-      ## qxy <- MASS::fractions(fxy) ##
-      qxy <- paste0(tabXY,"/",N)
+
+      if (abs(N-1) < 1E-10) {
+          qxy <- round(tabXY, dig)
+      } else {
+          qxy <- paste0(tabXY,"/",N)
+      }
       ## labels = round(fxy[fxy>0], dig) ##
       s3d <- scatterplot3d::scatterplot3d(xa, ya, fxy, type="h",
             main=paste("Joint Probability Distribution of", Xn, "&", Yn),
@@ -1855,7 +1857,7 @@ cont.jpdf <- function(fun, lb, ub, y1, y2, type="m", xp, yp,
         ## if (!missing(yp)) out$fx_yp <- fx_yp
         ## if (!missing(xp)) out$fy_xp <- fy_xp
     }
-    return(out)
+    invisible(out)
 }
 
 # [4-10] Transformation of a Continuous Random Variable
@@ -1875,8 +1877,8 @@ cont.jpdf <- function(fun, lb, ub, y1, y2, type="m", xp, yp,
 #' @examples
 #' # Linear Transformation
 #' TR <- c(y="10*x-4", w="-10*x+4")
-#' cont.trans(fx="dnorm(x)", tf=TR, a=9, b=12)
-#' cont.trans(fx="dnorm(x)", tf=TR, a=9, b=12, prt=FALSE, ws=c(9,3))
+#' cont.trans(fx="dnorm(x)", tf=TR, a=-1, b=1)
+#' cont.trans(fx="dnorm(x)", tf=TR, a=-1, b=1, prt=FALSE, ws=c(9,3))
 #' cont.trans("(x+1)/2", c(-1,1), TR, a=-0.3, b=0.7, ws=c(9,3))
 #' # Non-linear Transformation
 #' cont.trans(fx="dnorm(x)", tf=c(y="x^2",w="exp(x)"), a=-1, b=1, ws=c(9,3))
@@ -2160,7 +2162,8 @@ cont.trans <- function(fx, flim, tf, a, b, prt=TRUE, dig=4, ws="n", xlim, ...) {
         xm <- (a+b)/2
         ym <- FnX(xm)*0.5
         xa <- k1:k2/200
-
+      # Suppress Warnings (NaN) in Plotting ----------
+      suppressWarnings({
         plot(xa, FnX(xa), type="n", las=1, ylab="f(x)", xlab="", main="pdf of X")
         cord.x <- c(a, seq(a, b, 0.01), b)
         cord.y <- c(0, FnX(seq(a, b, 0.01)), 0)
@@ -2218,6 +2221,7 @@ cont.trans <- function(fx, flim, tf, a, b, prt=TRUE, dig=4, ws="n", xlim, ...) {
                 lines(xa, FTF[[k]](xa), lwd=2, col="red")
             }
         } # End of for
+      }) # End of suppressWarnings
     } # End of plot
     invisible(FTF)
 }
@@ -2876,18 +2880,25 @@ Tr.cdf <- function(fun, low, itrf, vn="x", v2n="y") {
     Sim.str(out)
 }
 
-# Remove Redundant Parentheses ## [Added: 2023.09.28]
+# Remove Redundant Parentheses ## [Added: 2023.09.28] [Revised: 2023.10.5]
 rem.paren <- function(ex)
 {
+  # When ex = variable or numeric item
     if( mode(ex) %in% c("name","numeric") ) return(ex)
 
+  # Check ex[[1]]
     op <- as.character(ex[[1]])
-    if( op %in% c("exp", "log", "abs", "sqrt") ) 
-                return(call(op, rem.paren(ex[[2]])))
+  # When ex[[1]] = (
     if( op == "(" ) return(rem.paren(ex[[2]]))
-
-    if( op %in% c("+","-","*","/","^") ) 
-                return(call(op, rem.paren(ex[[2]]), rem.paren(ex[[3]])))
+  # When ex[[1]] = function
+    if( op %in% c("+","-","*","/","^") ) {
+        return(call(op, rem.paren(ex[[2]]), rem.paren(ex[[3]])))
+    } else {
+        return(call(op, rem.paren(ex[[2]])))
+    }
 }
 
-remove.par <- function(s) deparse(rem.paren(parse(text=s)[[1]]))
+remove.par <- function(s) {
+    temp <- deparse(rem.paren(parse(text=s)[[1]]))
+    gsub(" ", "", temp)
+}

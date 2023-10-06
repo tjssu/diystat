@@ -212,13 +212,14 @@ getpdf8 <- function(dist, xa, para, para2) {
 
 #' @return None.
 #' @examples
-#' mu <- c(0,0,2,2)
-#' sig <- c(1,2,1,2)
+#' # Four normal PDFs
+#' mu <- c(0, 0, 2, 2)
+#' sig <- c(1, 2, 1, 2)
 #' cont.spdf("norm", mu, sig, xp=mu, xlim=c(-7,7))
-#'
+#' # 12 normal PDFs
 #' mu <- rep(1:4, 3); sig <- rep(1:3, each=4)
 #' cont.spdf("norm", mu, sig, xp=mu, sep=TRUE, xlim=c(-5,10))
-#'
+#' # Four F PDFs
 #' cont.spdf("f", 5:8, 8:11, sep=TRUE)
 #' @rdname cont.spdf
 #' @export
@@ -418,8 +419,9 @@ cont.spdf <- function(dist, para, para2, ws=c(7,4), xp, sep=FALSE, ...) {
 #' @param ... Other graphic parameters.
 #' @return None.
 #' @examples
+#' # X ~ N(2, 2): Pr(-1 < X < 4)
 #' norm.trans(2, 2, -1, 4)
-#'
+#' # X ~ N(100, 4): Pr(-95 < X < 108)
 #' norm.trans(100, 4, 95, 108)
 #' @rdname norm.trans
 #' @export
@@ -1496,7 +1498,7 @@ f.prob <- function(nu1, nu2, ub, lb=0, prt=TRUE, dig=4, ws=c(7,4), ...) {
 #' @examples
 #' nu1 <- 8; nu2 <- 5
 #' pv <- c(0.005, 0.01, 0.025, 0.05, 0.5, 0.95, 0.975, 0.99, 0.995)
-#' f.quant(nu1, nu2, pv, pv2)
+#' f.quant(nu1, nu2, pv)
 #' @rdname f.quant
 #' @export
 f.quant <- function(nu1, nu2, pv, prt=TRUE, dig=4, ws=c(7,4), PDF=TRUE, ...) {

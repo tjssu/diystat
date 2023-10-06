@@ -147,7 +147,7 @@ ch2.man <- function(fn=0) {
 #' @examples
 #' set.seed(1234)
 #' freq.table(rnorm(100))
-#' freq.table(rnorm(100), plot=TRUE, col=7)
+#' freq.table(rnorm(100), ws=c(7,5), col=7)
 #' @export
 freq.table <- function(x, breaks, dig=4, ws="n", ...) {
     x <- as.vector(x)
@@ -357,8 +357,8 @@ unstable.hist <- function(N=200, mu=c(10,6), sig=c(1,0.5), miss=c(8,9), cut=9,
 #' @return None
 #' @examples
 #' strat.hist()
-#' win.graph(9,6); strat.hist(ng=4, mu=c(6,10,14,18), spec=c(4,20))
-#' win.graph(9,6); strat.hist(ng=5, n=400, prob=T)
+#' strat.hist(ng=4, mu=c(6,10,14,18), ws=c(9,6), spec=c(4,20))
+#' strat.hist(ng=5, n=400, ws=c(9,6), prob=T)
 #' @export
 strat.hist <- function(ng=3, n=200, mu=2+4*1:ng, sig=1, spec, ws, mfd, ...)
 {
@@ -433,11 +433,11 @@ strat.hist <- function(ng=3, n=200, mu=2+4*1:ng, sig=1, spec, ws, mfd, ...)
     }
 }
 
-# [2-5] Draw Stratified Histograms from a Data Frame
+# [2-5] Draw Stratified Histograms with a Data Frame
 
-#' Stratified Histograms
+#' Stratified Histograms with a Data Frame
 #'
-#' To draw stratified histograms from a data frame.
+#' To draw stratified histograms using a data frame.
 #' @param df Data frame of input data.
 #' @param cdep The column of the dependent variable.
 #' @param cfac The column of the stratifying factor.
@@ -554,8 +554,8 @@ rbivariate <- function(m1, s1, m2, s2, r, n) {
 #' @return None
 #' @keywords Ch2. Descriptive Statistics
 #' @examples
-#' win.graph(9,6); corr.plot6()
-#' win.graph(9,6); corr.plot6(r=0.6, r2=0.9, n=100)
+#' corr.plot6()
+#' corr.plot6(r=0.6, r2=0.9, n=100)
 #' @export
 corr.plot6 <- function(m1 = 60, s1=10, m2=60, s2=10, r=0.7, r2=-0.8, n=50, ws=c(9,6)) {
   # adjusting graphic parameters

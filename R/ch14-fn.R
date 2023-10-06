@@ -384,7 +384,7 @@ sreg.pre <- function(x, y, data, r0, alt="two", alp=0.05, dig=4, ws="n", ...)
 #' sreg.lse(y2 ~ x)
 #' sreg.lse(y2 ~ x, type="aov")
 #' sreg.lse(y2 ~ x, type="test")
-#' sreg.lse(y2 ~ x, type="all", diag=c(1:3,5))
+#' sreg.lse(y2 ~ x, type="all", dp=c(1:3,5))
 #' @rdname sreg.lse
 #' @export
 
@@ -602,13 +602,13 @@ sreg.lse <- function(x, y, data, type="lse", alp=0.05, dig=4, dp, ws="n", ...)
 #' @return CI and PI.
 #'
 #' @examples
-#' sreg.pred(iris[3], iris[4], x0=2)
-#' sreg.pred(iris[3], iris[4], x0=2, plot=T)
+#' sreg.pred(iris[[3]], iris[[4]], x0=2)
+#' sreg.pred(iris[[3]], iris[[4]], x0=2, ws=c(7,5))
 #'
 #' x <- c(1095, 1110, 1086, 1074, 1098, 1105, 1163, 1124, 1088, 1064)
 #' y <- c(49, 52, 48, 49, 50, 51, 50, 51, 49, 48)
 #' (y2 <- y*x/1000)
-#' sreg.pred(x, y2, x0=1200, plot=T)
+#' sreg.pred(x, y2, x0=1200, ws=c(7,5))
 #'
 #' @rdname sreg.pred
 #' @export
@@ -818,18 +818,17 @@ panel.cor = function(x, y, alp=0.05, digits=4, prefix="") {
 #' @return Matrices for calculating the LSE.
 #'
 #' @examples
-#' attach(mtcars)
+#' # Data set 'mtcars'
 #' form <- mpg ~ hp + drat + wt
-#' mreg.lse(form)
-#' mreg.lse(form, pre=NA, aov=TRUE)
-#' mreg.lse(form, pre=NA, test=TRUE)
-#'
-#' data(exa14_10)
-#' Score <- exa14_10[[1]]; Study <- exa14_10[[2]]; Reading <- exa14_10[[3]]
+#' mreg.lse(form, data=mtcars)
+#' mreg.lse(form, data=mtcars, type="aov")
+#' mreg.lse(form, data=mtcars, type="test")
+#' # Example 14.9
+#' data(exa14_9)
 #' form2 <- Score ~ Study + Reading
-#' mreg.lse(form2)
-#' mreg.lse(form2, pre=NA, aov=TRUE)
-#' mreg.lse(form2, pre=NA, test=TRUE)
+#' mreg.lse(form2, data=exa14_9)
+#' mreg.lse(form2, data=exa14_9, type="aov")
+#' mreg.lse(form2, data=exa14_9, type="test")
 #' @rdname mreg.lse
 #' @export
 
@@ -1023,21 +1022,20 @@ mreg.lse <- function(form, data, type="lse", alp=0.05, dig=4, ws="n") {
 #' @return CI and PI
 #'
 #' @examples
-#' attach(mtcars)
+#' # Data set 'mtcars'
 #' form <- mpg ~ hp + drat + wt
 #' newd <- data.frame(hp=300, drat=4, wt=4)
-#' mreg.pred(form, newd)
-#' mreg.pred(form, plot=T, pvx=1, xrng=c(30,400))
-#' mreg.pred(form, plot=T, pvx=2, xrng=c(2,6))
-#' mreg.pred(form, plot=T, pvx=3, xrng=c(1,6))
-#'
-#' data(exa14_10)
-#' Score <- exa14_10[[1]]; Study <- exa14_10[[2]]; Reading <- exa14_10[[3]]
-#' form2 <- Score  Study + Reading
+#' mreg.pred(form, data=mtcars, newd)
+#' mreg.pred(form, data=mtcars, ws=c(7,6), pvx=1, xlim=c(30,400))
+#' mreg.pred(form, data=mtcars, ws=c(7,6), pvx=2, xlim=c(2,6))
+#' mreg.pred(form, data=mtcars, ws=c(7,6), pvx=3, xlim=c(1,6))
+#' # Example 14.9
+#' data(exa14_9)
+#' form2 <- Score ~ Study + Reading
 #' nd <- data.frame(Study=5, Reading=5)
-#' mreg.pred(form2, newd=nd)
-#' mreg.pred(form2, xrng=c(0, 15), pvx=1, plot=T)
-#' mreg.pred(form2, xrng=c(0, 15), pvx=2, plot=T)
+#' mreg.pred(form2, data=exa14_9, newd=nd)
+#' mreg.pred(form2, data=exa14_9, ws=c(7,6), xrng=c(0,15), pvx=1)
+#' mreg.pred(form2, data=exa14_9, ws=c(7,6), xrng=c(0,15), pvx=2)
 #'
 #' @rdname mreg.pred
 #' @export
@@ -1106,8 +1104,8 @@ mreg.pred <- function(form, data, newd, alp=0.05, dig=4, ws="n", pvx=1, ...)
             otab2 <- rbind(otab2, c(xv0, yh, se2, tol2, lcl2, ucl2))
         }
 
-        colnames(otab1) <- c(colnames(nd), "E(y|x0)", "se(CI)", "tol(CI)", "LCL", "UCL")
-        colnames(otab2) <- c(colnames(nd), "(Y|x0)", "se(PI)", "tol(PI)", "LPL", "UPL")
+        colnames(otab1) <- c(colnames(newd), "E(y|x0)", "se(CI)", "tol(CI)", "LCL", "UCL")
+        colnames(otab2) <- c(colnames(newd), "(Y|x0)", "se(PI)", "tol(PI)", "LPL", "UPL")
         rownames(otab1) <- rownames(otab2) <- paste0("Case ", 1:rr, ":")
         cat("[Confidence & Prediction Intervals at x0] ___________________\n")
         cat("\tMSE =", myf1(mse), paste0("\tt_(", 1-alp/2, ",", dfe, 
@@ -1220,16 +1218,15 @@ mreg.pred <- function(form, data, newd, alp=0.05, dig=4, ws="n", pvx=1, ...)
 #' @return ANOVA table.
 #'
 #' @examples
-#' attach(mtcars)
+#' # Data set 'mtcars'
 #' form.1 <- mpg ~ hp + drat + wt
 #' form.2 <- mpg ~ hp * drat * wt
-#' mreg.diff(form.1, form.2)
-#'
-#' data(exa14_10)
-#' Score <- exa14_10[[1]]; Study <- exa14_10[[2]]; Reading <- exa14_10[[3]]
+#' mreg.diff(form.1, form.2, data=mtcars)
+#' # Example 14.9
+#' data(exa14_9)
 #' form2.1 <- Score ~ Study + Reading
 #' form2.2 <- Score ~ Study * Reading
-#' mreg.diff(form2.1, form2.2)
+#' mreg.diff(form2.1, form2.2, data=exa14_9)
 #' @rdname mreg.diff
 #' @export
 
