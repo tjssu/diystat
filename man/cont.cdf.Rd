@@ -2,19 +2,14 @@
 % Please edit documentation in R/ch4-fn.R
 \name{cont.cdf}
 \alias{cont.cdf}
-\alias{cont.prob}
 \title{CDF of a Continuous Random Variable}
 \usage{
 cont.cdf(fun, lb, ub, xp, prt = FALSE, dig = 4, ws = c(7, 5), xlim, ...)
-
-cont.prob(fun, aa, bb, lb, ub, prt = TRUE, dig = 4, ws = "n", xlim, ...)
 }
 \arguments{
-\item{fun}{Probability density function f(x) or "f(x)".}
+\item{lb}{Lower bound of the PDF.}
 
-\item{lb}{Lower bound of f(x)}
-
-\item{ub}{Upper bound of f(x)}
+\item{ub}{Upper bound of the PDF.}
 
 \item{xp}{Specific values of X for displaying the probability.}
 
@@ -28,19 +23,13 @@ cont.prob(fun, aa, bb, lb, ub, prt = TRUE, dig = 4, ws = "n", xlim, ...)
 
 \item{...}{Other graphic parameters.}
 
-\item{aa}{Upper bound bb of P(aa<X<bb).}
-
 \item{fx}{Probability density function f(x) of X.}
 }
 \value{
 list(CDF=CDF, mean=EX, sd=DX).
-
-Table of P(X<bb), P(X<aa), and P(aa<X<bb).
 }
 \description{
 Cumulative Distribution Function of a Continuous Random Variable.
-
-Interval Probability P(aa<X<bb) of a Continuous Random Variable X.
 }
 \examples{
 # f(x) = 2*exp(-2*x), for (x>0)
@@ -53,17 +42,5 @@ cont.cdf("3*x^2", lb=0, ub=1, xp=(2:5)*0.2, prt=TRUE)
 
 # f(x) = dnorm(x,10,2), for (-Inf<x<Inf)
 cont.cdf("dnorm(x,10,2)", xp=3:7*2, prt=TRUE)
-
-pdf <- function(x) 2*exp(-2*x)*(x>0)
-cont.prob(pdf, aa=c(0.2,0.7), bb=c(0.5,1))
-cont.prob(pdf, aa=c(0.2,0.7), bb=c(0.5,1), prt=FALSE, ws=c(7,4))
-cont.prob(pdf, aa=c(0.2,0.7), bb=c(0.5,1), ws=c(7,4), xlim=c(-0.5,2))
-
-# f(x) = 3*x^2, for (0<x<1)
-cont.prob("3*x^2", aa=0:2*0.3, bb=1:3*0.25, lb=0, ub=1, ws=c(7,4))
-
-# Other built-in PDFs
-cont.prob("dnorm(x,10,2)", aa=1:3*4, bb=1:3*4+3, ws=c(7,4))
-cont.prob("dexp(x)", aa=1:3*0.4, bb=1:3*0.4+0.3, prt=TRUE, ws=c(7,4))
 
 }
