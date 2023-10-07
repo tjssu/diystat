@@ -2890,8 +2890,9 @@ rem.paren <- function(ex)
     op <- as.character(ex[[1]])
   # When ex[[1]] = (
     if( op == "(" ) return(rem.paren(ex[[2]]))
-  # When ex[[1]] = function
-    if( op %in% c("+","-","*","/","^") ) {
+  # Otherwise
+    ## if( op %in% c("+","-","*","/","^") ) {
+    if (length(ex) == 3) {
         return(call(op, rem.paren(ex[[2]]), rem.paren(ex[[3]])))
     } else {
         return(call(op, rem.paren(ex[[2]])))

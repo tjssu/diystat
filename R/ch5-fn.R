@@ -157,7 +157,7 @@ prt.div2 <- function(str, M=80, H=7, spl="\\)", sph="-") {
 #' @return list(EX=expected value, VX=variance)
 #' @examples
 #' S <- tosscoin2(10)
-#' X <- apply(S,1,\(x) sum(x=="H"))
+#' X <- apply(S, 1, function(x) sum(x=="H"))
 #' # Using the raw random variable
 #' disc.exp(X, ws=c(7,4))
 #' # Using the frequency table
@@ -165,7 +165,7 @@ prt.div2 <- function(str, M=80, H=7, spl="\\)", sph="-") {
 #' disc.exp(x, ws=c(7,4))
 #' 
 #' # Using the PDF: B(20, 0.5)
-#' x <- (0:20); y <- x^2
+#' x <- (0:20); y <- "x^2"
 #' fun <- function(v) dbinom(v, 20, 0.5)
 #' disc.exp(fun, x, y, prt="var", ws=c(7,4), cex=0.6)
 #' @rdname disc.exp
@@ -1428,6 +1428,11 @@ cont.jexp <- function(fun, lb, ub, y1, y2, Tr, prt="exp", dig=4, frac=FALSE) {
     bound2 <- paste0(":[<", ub[1], ">-<", lb[1], ">]") # outer bound
     bound1 <- paste0(":[<", y2, ">-<", y1, ">]") # inner bound
 
+    pcex1 <- remove.par(cex1)
+    pcey1 <- remove.par(cey1)
+    pcex2 <- remove.par(cex2)
+    pcey2 <- remove.par(cey2)
+
     if (prt %in% c("exp", "var", "cov", "cor")) {
       # E(X) and E(Y)
         fix11 <- Int0.str(cex1, "y")
@@ -1458,8 +1463,6 @@ cont.jexp <- function(fun, lb, ub, y1, y2, Tr, prt="exp", dig=4, frac=FALSE) {
             if (nchar(mix11)>80) dix11 <- prt.div2(dix11,75)
             if (nchar(miy11)>80) diy11 <- prt.div2(diy11,75)
 
-            pcex1 <- remove.par(cex1)
-            pcey1 <- remove.par(cey1)
             cat(paste0("E(X) = ", pint, pcex1, "}dy dx",
                 "\n", mix11, "\n", dix11, 
                 "\n     = ", fix12, bound2,
@@ -1507,8 +1510,6 @@ cont.jexp <- function(fun, lb, ub, y1, y2, Tr, prt="exp", dig=4, frac=FALSE) {
             if (nchar(mix21)>80) dix21 <- prt.div2(dix21,75)
             if (nchar(miy21)>80) diy21 <- prt.div2(diy21,75)
 
-            pcex2 <- remove.par(cex2)
-            pcey2 <- remove.par(cey2)
             cat(paste0("E(X\U00B2) = ", pint, pcex2, "}dy dx",
                 "\n", mix21, "\n", dix21, 
                 "\n      = ", fix22, bound2,
@@ -2787,7 +2788,7 @@ cont.jexp0 <- function(FUN, lo1=-Inf, up1=Inf, lo2=-Inf, up2=Inf, dig=4, prt="ex
 #' @param plot Logical: Plot the PDF and scatter plots? Default: FALSE.
 #' @return None.
 #' @examples
-#' S <- prob::rolldie(4)
+#' S <- rolldie2(4)
 #' item <- c("Mean", "Median", "R-mean", "Range")
 #' X <- list()
 #' X[[1]] <- apply(S, 1, mean)
