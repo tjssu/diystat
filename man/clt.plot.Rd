@@ -41,6 +41,6 @@ clt.plot("exp", para=5, N=10000)
 clt.plot("exp", para=5, ns=c(1,3,5,10)*10, breaks=50)
 # Gamma distribution
 clt.plot("gam", para=0.5, para2=10)
-clt.plot("gam", para=0.5, para2=10, ns=c(1,3,5,10)*10, d=rep(0.4, 4))
-clt.plot("bin", para=0.1, ns=nv, d=c(1, 0.6, 0.5))
+clt.plot("gam", para=0.5, para2=10, ns=c(1,3,5,10)*10, breaks=50)
+clt.plot("gam", para=0.5, para2=10, ns=c(1,3,5,10)*10, N=10000, breaks=100)
 }

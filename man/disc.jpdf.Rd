@@ -79,9 +79,7 @@ x=1:3; y=1:5
 tab = outer(x, y, fxy)
 dimnames(tab) <- list(X=x, Y=y)
 disc.jpdf(tab, ws=c(7,5))
-# Normalize the PDF
-pdf = function(x, y) (x^2+y)/115
-disc.jpdf(x, y, pdf, ws=c(7,5))
+
 # Marginal
 disc.jpdf(tab, type="m", ws=c(7,5))
 # Conditional

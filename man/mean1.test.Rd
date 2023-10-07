@@ -45,21 +45,21 @@ Summary Statistics.
 Hypothesis Test for a Single Population Mean.
 }
 \examples{
-95\%-CI, known sigma
+# 95\%-CI, known sigma
 mean1.test(199.5, sig=5, n=50)
-95\%-CI, unknown sigma
+# 95\%-CI, unknown sigma
 mean1.test(199.5, ss=5, n=50)
 
-H0: mu>12.5, known sigma
+# H0: mu>12.5, known sigma
 mean1.test(x=12.64, mu0=12.5, alt="gr", sig=0.5, n=40)
-H0: mu>12.5, unknown sigma
+# H0: mu>12.5, unknown sigma
 mean1.test(x=12.64, mu0=12.5, alt="gr", ss=0.5, n=40)
 
 set.seed(1234)
 x <- rnorm(40, 12.64, 0.5)
-H0: mu != 12.5, unknown sigma
+# H0: mu != 12.5, unknown sigma
 mean1.test(x, mu0=12.5)
-H0: mu < 12.5, unknown sigma
+# H0: mu < 12.5, unknown sigma
 mean1.test(x, mu0=12.5, alt="le")
 
 }

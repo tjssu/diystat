@@ -26,14 +26,13 @@ ANOVA table.
 Compare Two Multiple Regression Models.
 }
 \examples{
-attach(mtcars)
+# Data set 'mtcars'
 form.1 <- mpg ~ hp + drat + wt
 form.2 <- mpg ~ hp * drat * wt
-mreg.diff(form.1, form.2)
-
-data(exa14_10)
-Score <- exa14_10[[1]]; Study <- exa14_10[[2]]; Reading <- exa14_10[[3]]
+mreg.diff(form.1, form.2, data=mtcars)
+# Example 14.9
+data(exa14_9)
 form2.1 <- Score ~ Study + Reading
 form2.2 <- Score ~ Study * Reading
-mreg.diff(form2.1, form2.2)
+mreg.diff(form2.1, form2.2, data=exa14_9)
 }

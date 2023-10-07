@@ -29,5 +29,5 @@ Simulate the Confidence Interval for a Population Variance
 }
 \examples{
 civar.sim(n=16, mu=10, sig=2)
-civar.sim(n=16, mu=10, sig=2, N=10000, plot=FALSE)
+civar.sim(n=16, mu=10, sig=2, N=10000, ws="n")
 }

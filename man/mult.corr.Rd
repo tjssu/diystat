@@ -28,13 +28,15 @@ Corr(X,Y) table.
 Correlation Coefficients and Scatter Plots of Random variables
 }
 \examples{
-S <- prob::rolldie(3)
+# Rolling three dice: (Sum, Range, Max, Min)
+S <- rolldie2(3)
 X = data.frame(Sum=apply(S, 1, sum), 
                Range=apply(S, 1, \(x) max(x)-min(x)),
                Max=apply(S, 1, max), 
                Min=apply(S, 1, min))
 mult.corr(X, ws=c(7,6))
 
+# "mtcars" data set: (mpg, disp, hp, drat, wt, qsec)
 select = c("mpg", "disp", "hp", "drat", "wt", "qsec")
 mult.corr(mtcars, select, ws=c(7,6))
 }

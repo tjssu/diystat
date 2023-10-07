@@ -45,5 +45,5 @@ sreg.lse(x, y2)
 sreg.lse(y2 ~ x)
 sreg.lse(y2 ~ x, type="aov")
 sreg.lse(y2 ~ x, type="test")
-sreg.lse(y2 ~ x, type="all", diag=c(1:3,5))
+sreg.lse(y2 ~ x, type="all", dp=c(1:3,5))
 }

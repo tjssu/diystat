@@ -28,12 +28,13 @@ None.
 Plot the PDF of Multiple Continuous Random Variables
 }
 \examples{
-mu <- c(0,0,2,2)
-sig <- c(1,2,1,2)
+# Four normal PDFs
+mu <- c(0, 0, 2, 2)
+sig <- c(1, 2, 1, 2)
 cont.spdf("norm", mu, sig, xp=mu, xlim=c(-7,7))
-
+# 12 normal PDFs
 mu <- rep(1:4, 3); sig <- rep(1:3, each=4)
 cont.spdf("norm", mu, sig, xp=mu, sep=TRUE, xlim=c(-5,10))
-
+# Four F PDFs
 cont.spdf("f", 5:8, 8:11, sep=TRUE)
 }

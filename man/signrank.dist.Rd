@@ -24,4 +24,7 @@ Plots and Tables of the Distribution of Wilcoxon Signed-Rank Test Statistic.
 \examples{
 signrank.dist(nv=5:15)
 signrank.dist(nv=c(5,7,10,20))
+# Quantile tables
+signrank.dist(nv=5:15, pp=c(0.95, 0.975))
+signrank.dist(nv=c(5,7,10,20), pp=c(0.95, 0.975, 0.99, 0.995))
 }

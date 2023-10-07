@@ -26,7 +26,7 @@ power.plot(
 
 \item{nv}{Sample size vector, Default: c(10,30,50,100).}
 
-\item{alt}{Type of the alternative hypothesis ("gr", "le", "two").}
+\item{alt}{Type of the alternative hypothesis ("two", "gr", "le").}
 
 \item{alp}{Level of significance, Default: 0.05.}
 

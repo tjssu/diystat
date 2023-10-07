@@ -36,8 +36,8 @@ Transformed PDF of a Continuous Random Variable.
 \examples{
 # Linear Transformation
 TR <- c(y="10*x-4", w="-10*x+4")
-cont.trans(fx="dnorm(x)", tf=TR, a=9, b=12)
-cont.trans(fx="dnorm(x)", tf=TR, a=9, b=12, prt=FALSE, ws=c(9,3))
+cont.trans(fx="dnorm(x)", tf=TR, a=-1, b=1)
+cont.trans(fx="dnorm(x)", tf=TR, a=-1, b=1, prt=FALSE, ws=c(9,3))
 cont.trans("(x+1)/2", c(-1,1), TR, a=-0.3, b=0.7, ws=c(9,3))
 # Non-linear Transformation
 cont.trans(fx="dnorm(x)", tf=c(y="x^2",w="exp(x)"), a=-1, b=1, ws=c(9,3))

@@ -30,12 +30,12 @@ CI and PI.
 Prediction and Confidence Interval in a Simple Regression.
 }
 \examples{
-sreg.pred(iris[3], iris[4], x0=2)
-sreg.pred(iris[3], iris[4], x0=2, plot=T)
+sreg.pred(iris[[3]], iris[[4]], x0=2)
+sreg.pred(iris[[3]], iris[[4]], x0=2, ws=c(7,5))
 
 x <- c(1095, 1110, 1086, 1074, 1098, 1105, 1163, 1124, 1088, 1064)
 y <- c(49, 52, 48, 49, 50, 51, 50, 51, 49, 48)
 (y2 <- y*x/1000)
-sreg.pred(x, y2, x0=1200, plot=T)
+sreg.pred(x, y2, x0=1200, ws=c(7,5))
 
 }

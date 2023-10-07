@@ -30,7 +30,8 @@ None.
 Check Probability Conservation in Standardizing the Normal Distribution
 }
 \examples{
+# X ~ N(2, 2): Pr(-1 < X < 4)
 norm.trans(2, 2, -1, 4)
-
+# X ~ N(100, 4): Pr(-95 < X < 108)
 norm.trans(100, 4, 95, 108)
 }

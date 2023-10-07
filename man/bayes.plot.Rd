@@ -32,8 +32,10 @@ Displaying the Prior and the Posterior Probabilities
 \examples{
 prior <- c(0.2, 0.4, 0.3, 0.1)
 cond <- c(0.04, 0.02, 0.01, 0.05)
+# Direct way
 bayes.plot(prior, cond)
 tot <- prior*cond
+# Using posterior probabilities
 post <- tot / sum(tot)
 bayes.plot(prior, post=post)
 }

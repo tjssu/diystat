@@ -30,16 +30,20 @@ list(EX=E(X), VX=Var(X))
 Calculate E(X) and Var(X) of a Continuous Random Variable X
 }
 \examples{
+# Using the PDF
 pdf <- function(x) exp(-2*x)*(x>0)
 cont.exp(pdf, prt="var")
-
+# Using the string PDF with a lower bound
 cont.exp("2*exp(-2*x)", lb=0, prt="var")
 
+# Using the string PDF with a two-sided bound
 cont.exp("2*y", lb=0, ub=1, prt="var")
 
+# Using the string of built-in PDF
 cont.exp("dnorm(x, 10, 3)", prt="var")
 cont.exp(\(x) dnorm(x, 10, 3), prt="var")
 
+# Applying transformation
 y="x^2"; cont.exp("dnorm(x)", Tr=y, prt="var")
 
 }

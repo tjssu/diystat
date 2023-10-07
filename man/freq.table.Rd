@@ -26,7 +26,7 @@ To create a frequency table for a numeric vector (or matrix) x.
 \examples{
 set.seed(1234)
 freq.table(rnorm(100))
-freq.table(rnorm(100), plot=TRUE, col=7)
+freq.table(rnorm(100), ws=c(7,5), col=7)
 }
 \keyword{Ch2}
 \keyword{Descriptive}

@@ -32,5 +32,5 @@ Quantile Plot of the F-distribution.
 \examples{
 nu1 <- 8; nu2 <- 5
 pv <- c(0.005, 0.01, 0.025, 0.05, 0.5, 0.95, 0.975, 0.99, 0.995)
-f.quant(nu1, nu2, pv, pv2)
+f.quant(nu1, nu2, pv)
 }

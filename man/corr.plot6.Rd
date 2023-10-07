@@ -39,8 +39,8 @@ None
 Create 6 types of scatter plots.
 }
 \examples{
-win.graph(9,6); corr.plot6()
-win.graph(9,6); corr.plot6(r=0.6, r2=0.9, n=100)
+corr.plot6()
+corr.plot6(r=0.6, r2=0.9, n=100)
 }
 \keyword{Ch2.}
 \keyword{Descriptive}

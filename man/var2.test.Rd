@@ -36,7 +36,7 @@ var2.test(x=3.5^2, y=5.8^2, n1=25, n2=34)
 
 set.seed(1234)
 x <- rnorm(20, 199, 4)
-y <- rnorm(25, 200, 2)
+y <- rnorm(25, 200, 3)
 var2.test(x, y)
 var2.test(x, y, alt="gr")
 var2.test(var(x), var(y), length(x), length(y), alt="gr")

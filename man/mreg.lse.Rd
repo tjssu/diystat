@@ -28,16 +28,15 @@ Matrices for calculating the LSE.
 Calculate Least Square Estimates for a Multiple Regression.
 }
 \examples{
-attach(mtcars)
+# Data set 'mtcars'
 form <- mpg ~ hp + drat + wt
-mreg.lse(form)
-mreg.lse(form, pre=NA, aov=TRUE)
-mreg.lse(form, pre=NA, test=TRUE)
-
-data(exa14_10)
-Score <- exa14_10[[1]]; Study <- exa14_10[[2]]; Reading <- exa14_10[[3]]
+mreg.lse(form, data=mtcars)
+mreg.lse(form, data=mtcars, type="aov")
+mreg.lse(form, data=mtcars, type="test")
+# Example 14.9
+data(exa14_9)
 form2 <- Score ~ Study + Reading
-mreg.lse(form2)
-mreg.lse(form2, pre=NA, aov=TRUE)
-mreg.lse(form2, pre=NA, test=TRUE)
+mreg.lse(form2, data=exa14_9)
+mreg.lse(form2, data=exa14_9, type="aov")
+mreg.lse(form2, data=exa14_9, type="test")
 }

@@ -31,8 +31,8 @@ To create Stratified Histograms from a mixed data set.
 }
 \examples{
 strat.hist()
-win.graph(9,6); strat.hist(ng=4, mu=c(6,10,14,18), spec=c(4,20))
-win.graph(9,6); strat.hist(ng=5, n=400, prob=T)
+strat.hist(ng=4, mu=c(6,10,14,18), ws=c(9,6), spec=c(4,20))
+strat.hist(ng=5, n=400, ws=c(9,6), prob=T)
 }
 \keyword{Ch2}
 \keyword{Descriptive}

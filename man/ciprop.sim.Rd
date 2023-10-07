@@ -37,7 +37,7 @@ Simulate the Confidence Interval for a Population Proportion
 }
 \examples{
 ciprop.sim(n=16, p=0.6, alp=0.05, N=100)
-ciprop.sim(n=16, p=0.6, alp=0.05, N=10000, plot=FALSE)
+ciprop.sim(n=16, p=0.6, alp=0.05, N=10000, ws="n")
 
-ciprop.sim(n=100, p=0.6, alp=0.05, N=10000, plot=FALSE)
+ciprop.sim(n=100, p=0.6, alp=0.05, N=10000, ws="n")
 }

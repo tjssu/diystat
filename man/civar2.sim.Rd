@@ -44,5 +44,5 @@ Simulate the Confidence Interval for a the Ratio of Population Variances
 \examples{
 civar2.sim(n1=25, n2=16)
 civar2.sim(var1=8, var2=2, n1=25, n2=16)
-civar2.sim(var1=8, var2=2, n1=25, n2=16, N=10000, plot=F)
+civar2.sim(var1=8, var2=2, n1=25, n2=16, N=10000, ws="n")
 }

@@ -30,20 +30,19 @@ CI and PI
 Prediction and Confidence Interval in a Multiple Regression Model.
 }
 \examples{
-attach(mtcars)
+# Data set 'mtcars'
 form <- mpg ~ hp + drat + wt
 newd <- data.frame(hp=300, drat=4, wt=4)
-mreg.pred(form, newd)
-mreg.pred(form, plot=T, pvx=1, xrng=c(30,400))
-mreg.pred(form, plot=T, pvx=2, xrng=c(2,6))
-mreg.pred(form, plot=T, pvx=3, xrng=c(1,6))
-
-data(exa14_10)
-Score <- exa14_10[[1]]; Study <- exa14_10[[2]]; Reading <- exa14_10[[3]]
-form2 <- Score  Study + Reading
+mreg.pred(form, data=mtcars, newd)
+mreg.pred(form, data=mtcars, ws=c(7,6), pvx=1, xlim=c(30,400))
+mreg.pred(form, data=mtcars, ws=c(7,6), pvx=2, xlim=c(2,6))
+mreg.pred(form, data=mtcars, ws=c(7,6), pvx=3, xlim=c(1,6))
+# Example 14.9
+data(exa14_9)
+form2 <- Score ~ Study + Reading
 nd <- data.frame(Study=5, Reading=5)
-mreg.pred(form2, newd=nd)
-mreg.pred(form2, xrng=c(0, 15), pvx=1, plot=T)
-mreg.pred(form2, xrng=c(0, 15), pvx=2, plot=T)
+mreg.pred(form2, data=exa14_9, newd=nd)
+mreg.pred(form2, data=exa14_9, ws=c(7,6), xrng=c(0,15), pvx=1)
+mreg.pred(form2, data=exa14_9, ws=c(7,6), xrng=c(0,15), pvx=2)
 
 }

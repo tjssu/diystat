@@ -26,10 +26,11 @@ Probablities to be compared.
 Determining Independence of Two Discrete Random Variables
 }
 \examples{
+# Three dice: Independence of A (even sum) and B (range of 5)
 S <- rolldie2(3); (N <- nrow(S))
 even <- function(x) (sum(x)\%\%2)==0
 span5 <- function(x) (max(x)-min(x))==5
-A <- subset(S, apply(S,1,even)); nrow(A)
-B <- subset(S, apply(S,1,span5)); nrow(B)
+A <- subset(S, apply(S, 1, even)); nrow(A)
+B <- subset(S, apply(S, 1, span5)); nrow(B)
 indep.event(A, B, nrow(S))
 }

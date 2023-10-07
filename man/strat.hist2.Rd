@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch2-fn.R
 \name{strat.hist2}
 \alias{strat.hist2}
-\title{Stratified Histograms}
+\title{Stratified Histograms with a Data Frame}
 \usage{
 strat.hist2(df, cdep, cfac, spec, br, col, ws, mfd, mar, prob = FALSE)
 }
@@ -31,7 +31,7 @@ strat.hist2(df, cdep, cfac, spec, br, col, ws, mfd, mar, prob = FALSE)
 None.
 }
 \description{
-To draw stratified histograms from a data frame.
+To draw stratified histograms using a data frame.
 }
 \examples{
 strat.hist2(iris, 1, 5)

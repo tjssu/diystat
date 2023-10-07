@@ -30,7 +30,6 @@ pprt(B, nrow(S))
 pprt2(B, An="Sum >= 8", nrow(S))
 
 S <- tosscoin2(4)
-S <- S[order(S[1], S[2], S[3], S[4]), ]
 A <- subset(S, apply(S, 1, function(x) sum(x=="H") >=2))
 pprt(A, nrow(S))
 pprt2(A, "Heads >= 2", nrow(S))
