@@ -1267,8 +1267,8 @@ signrank.table <- function(nv=5:10, pp) {
 #' x <- c(38, 26, 34, 5, 68, 30, 35, 19, 33, 69)
 #' y <- c(28, 21, 31, 11, 59, 28, 28, 23, 32, 38)
 #' d <- x-y; shapiro.test(d)
-#' signrank.tsp(x, y, alt="gr")
-#' signrank.tsp(y, x, alt="le")
+#' signrank.tsp(x, y, alt="gr", ws=c(7,4))
+#' signrank.tsp(y, x, alt="le", ws=c(7,4))
 #' @rdname signrank.tsp
 #' @export
 signrank.tsp <- function(x, y, mu0=0, alt="two", dig=4, ws="n") {

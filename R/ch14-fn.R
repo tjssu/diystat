@@ -121,22 +121,26 @@ ch14.man <- function(fn=0) {
 #' @return List of statistics.
 #'
 #' @examples
+#' # First two columns of "iris" data set
 #' sreg.pre(iris[[1]], iris[[2]])
 #' sreg.pre(1, 2, iris)
+#' # Test for correlation
 #' sreg.pre(1, 2, iris, r0=0, ws=c(7,4))
-#'
+#' # The 3rd and 4th columns of "iris" data set
 #' sreg.pre(iris[[3]], iris[[4]], ws=c(7,4))
-#' sreg.pre(3, 4, iris, ws=c(7,4), res=TRUE)
+#' sreg.pre(3, 4, iris, ws=c(7,4))
 #'
 #' x <- c(1095, 1110, 1086, 1074, 1098, 1105, 1163, 1124, 1088, 1064)
 #' y <- c(49, 52, 48, 49, 50, 51, 50, 51, 49, 48)
 #' sreg.pre(x, y)
+#' # Test for correlation
 #' sreg.pre(x, y, r0=0.9, ws=c(7,4))
 #' sreg.pre(y ~ x, r0=0.9, ws=c(7,4))
+#' # Data transformation
 #' (y2 <- y*x/1000)
 #' sreg.pre(x, y2)
-#' sreg.pre(x, y, r0=0.6, alt="gr")
-#' sreg.pre(x, y2, ws=c(7,4), res=TRUE, xlab="Exchange Rate", ylab="Exports")
+#' # Test for correlation coefficient
+#' sreg.pre(x, y2, r0=0.6, alt="gr", ws=c(7,4))
 #' @rdname sreg.pre
 #' @export
 
@@ -466,7 +470,7 @@ sreg.lse <- function(x, y, data, type="lse", alp=0.05, dig=4, dp, ws="n", ...)
 
     kk <- 0
   # Estimate simple regression coefficients
-    if (("lse" %in% type) || (type == "all")) {
+    if (("lse" %in% type) || ("all" %in% type)) {
         kk <- kk + 1
         ##cat(paste0("[", kk, "]"), "LSE Calculation _________________________________\n")
         cat(paste0("Sxx = ", myf0(sum(x^2)), " - (", myf0(sum(x)),
@@ -496,7 +500,7 @@ sreg.lse <- function(x, y, data, type="lse", alp=0.05, dig=4, dp, ws="n", ...)
     antab[3,1:2] <- c(sum(an1$Sum), sum(an1$Df))
 
   # ANOVA table by calculating sum of squares
-    if (("aov" %in% type) || (type == "all")) {
+    if (("aov" %in% type) || ("all" %in% type)) {
         cat("[Calculating Sum of Squares] _________________\n")
         cat(paste0("SST = ", myf0(sum(y^2)), " - (", myf0(sum(y)), ")\U00B2",
             "/ ", nn,    " = ", myf1(SST)), "\n")
@@ -548,7 +552,7 @@ sreg.lse <- function(x, y, data, type="lse", alp=0.05, dig=4, dp, ws="n", ...)
     out <- rbind(c(b1, tol1, tstat1, pv1), c(b0, tol0, tstat0, pv0))
     colnames(out) <- c("LSE", "Tol", "Stat", "p-val")
 
-    if (("test" %in% type) || (type == "all")) {
+    if (("test" %in% type) || ("all" %in% type)) {
         astat1 <- format(round(abs(tstat1), dig), nsmall=dig)
         astat0 <- format(round(abs(tstat0), dig), nsmall=dig)
 
@@ -889,7 +893,7 @@ mreg.lse <- function(form, data, type="lse", alp=0.05, dig=4, ws="n") {
     fbh <- format(c(bh,0.123456789),F,dig)
     fbh <- fbh[-length(fbh)]
 
-    if (("lse" %in% type) || (type == "all")) {
+    if (("lse" %in% type) || ("all" %in% type)) {
         ##cat("[LSE Calculation] __________________________________________________\n")
         cat("[X'X matrix] _______________________\n")
         print(XX)
@@ -922,7 +926,7 @@ mreg.lse <- function(form, data, type="lse", alp=0.05, dig=4, ws="n") {
     } # End of pre
 
   # Test for the Significance of a Multiple Regression Model
-    if (("aov" %in% type) || (type == "all")) {
+    if (("aov" %in% type) || ("all" %in% type)) {
         # Analysis of variance
         SST <- sum(an1$Sum)
         SSR <- sum(an1$Sum[1:ke])
@@ -971,7 +975,7 @@ mreg.lse <- function(form, data, type="lse", alp=0.05, dig=4, ws="n") {
     } # End of aov
 
     # Test for the Significance of Multiple Regression Coefficients
-    if (("test" %in% type) || (type == "all")) {
+    if (("test" %in% type) || ("all" %in% type)) {
       # LSE of multiple regression coefficients
         bh <- lm1$coef
         MSE <- an1$Mean[kk]
@@ -998,10 +1002,10 @@ mreg.lse <- function(form, data, type="lse", alp=0.05, dig=4, ws="n") {
     } # End of test
 
   # Return the results
-    if (type == "all") {
-        rout=list(lse=bh, aov=antab, test=citab)
+    if ("all" %in% type) {
+        rout <- list(lse=bh, aov=antab, test=citab)
     } else {
-        rout=list(lse=bh)
+        rout <- list(lse=bh)
         if ("aov" %in% type) rout$aov <- antab
         if ("test" %in% type) rout$test <- citab
     }

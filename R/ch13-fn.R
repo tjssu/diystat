@@ -418,6 +418,8 @@ anova1.conf <- function(f, y, data, alp=0.05, dig=4, ws=c(7,4), main) {
 #' Temp <- as.factor(Temp)
 #' dd <- aov(Yield ~ Temp)
 #' anova1.diff(dd)
+#'
+#' # Tukey's HSD intervals
 #' anova1.diff(dd, ci="hsd")
 #' anova1.diff(dd, ci="both")
 #' @rdname anova1.diff
@@ -848,11 +850,14 @@ anova2.fit <- function(form, data, alp=0.05, dig=4, ws=c(7,4), dp=1:2, ...)
 #' f2 <- rep(c(1,1,2,2,3,3), 4)
 #' Temp <- as.factor(f1)
 #' Press <- as.factor(paste0(f2, "Psig"))
+#' # [1] Formula input
 #' anova2.conf(Yield ~ Temp * Press)
 #'
+#' # [2] anova2.fit object input
 #' bb <- anova2.fit(Yield ~ Temp * Press)
 #' anova2.conf(bb)
 #'
+#' # [3] aov (lm) object input
 #' ee <- aov(Yield ~ Temp * Press)
 #' anova2.conf(ee)
 #'
@@ -860,11 +865,14 @@ anova2.fit <- function(form, data, alp=0.05, dig=4, ws=c(7,4), dp=1:2, ...)
 #' Yield1 <- c(77.5,80.0,89.0,80.5, 80.0,85.0,92.5,84.5, 84.0,88.5,87.0,76.5)
 #' Temp1 <- c(100,150,200,250, 100,150,200,250, 100,150,200,250)
 #' Press1 <- c(1,1,1,1, 2,2,2,2 ,3,3,3,3)
-#' anova2.conf(Yield1 ~ Temp1 * Press1)
+#' # [1] Formula input
+#' anova2.conf(Yield1 ~ Temp1 + Press1)
 #'
+#' # [2] anova2.fit object input, checking interaction
 #' cc <- anova2.fit(Yield1 ~ Temp1 * Press1)
 #' anova2.conf(cc)
 #'
+#' # [3] aov (lm) object input
 #' Temp.f <- as.factor(Temp1)
 #' Press.f <- as.factor(Press1)
 #' ff <- aov(Yield1 ~ Temp.f + Press.f)
@@ -1070,11 +1078,14 @@ anova2.conf <- function(f, data, alp=0.05, maxim=TRUE, dig=4, ws=c(7,4), main)
 #' f2 <- rep(c(1,1,2,2,3,3), 4)
 #' Temp <- as.factor(f1)
 #' Press <- as.factor(paste0(f2, "Psig"))
-#' anova2.diff(Yield ~ Temp * Press)
+#' # [1] Formula input
+#' anova2.diff(Yield ~ Temp + Press)
 #'
+#' # [2] anova2.fit object input
 #' bb <- anova2.fit(Yield ~ Temp * Press)
 #' anova2.diff(bb)
 #'
+#' # [3] aov (lm) object input
 #' ee <- aov(Yield ~ Temp * Press)
 #' anova2.diff(ee)
 #'
@@ -1082,11 +1093,14 @@ anova2.conf <- function(f, data, alp=0.05, maxim=TRUE, dig=4, ws=c(7,4), main)
 #' Yield1 <- c(77.5,80.0,89.0,80.5, 80.0,85.0,92.5,84.5, 84.0,88.5,87.0,76.5)
 #' Temp1 <- c(100,150,200,250, 100,150,200,250, 100,150,200,250)
 #' Press1 <- c(1,1,1,1, 2,2,2,2 ,3,3,3,3)
-#' anova2.diff(Yield1 ~ Temp1 * Press1)
+#' # [1] Formula input
+#' anova2.diff(Yield1 ~ Temp1 + Press1)
 #'
+#' # [2] anova2.fit object input, checking interaction
 #' cc <- anova2.fit(Yield1 ~ Temp1 * Press1)
 #' anova2.diff(cc)
 #'
+#' # [3] aov (lm) object input
 #' Temp.f <- as.factor(Temp1)
 #' Press.f <- as.factor(Press1)
 #' ff <- aov(Yield1 ~ Temp.f + Press.f)

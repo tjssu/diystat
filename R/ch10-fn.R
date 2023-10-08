@@ -1025,11 +1025,11 @@ power.plot <- function(mu0, mu1, sig, nv,
     myf1 <- function(x) format(round(x, dig), nsmall=dig)
 
   # Type of the alternative hypothesis
+    if (missing(alt)) alt <- "two"
     nalt <- alt.num(alt)
   # Set plot variables
     if (missing(mu0)) mu0 <- 0
     if (missing(sig)) sig <- 1
-    if (missing(alt)) alt <- "two"
     if (missing(nv)) nv <- c(10, 30, 50, 100)
     nn <- length(nv)
     se0 <- sig/sqrt(min(nv))

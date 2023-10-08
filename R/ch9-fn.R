@@ -895,7 +895,7 @@ chi.sim <- function(ns, mu=0, sig=1, N=1000, muknow=TRUE, prt=TRUE, ws=c(10,4), 
 #' fdist.sim(n1=5, n2=4, xlim=c(0,20))
 #' fdist.sim(n1=5, n2=4, N=10000, breaks=100, xlim=c(0,20))
 #'
-#' @rdname fdist.sim2
+#' @rdname fdist.sim
 #' @export
 fdist.sim <- function(sig1=1, sig2=1, n1, n2, N=1000, prt=TRUE, ws=c(10,4), dig=4, ...)
 {
