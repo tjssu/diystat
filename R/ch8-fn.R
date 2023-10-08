@@ -1590,7 +1590,7 @@ f.quant <- function(nu1, nu2, pv, prt=TRUE, dig=4, ws=c(7,4), PDF=TRUE, ...) {
 }
 
 # [OLD] ------------------------------------------------------
-# [8-9] Simulation of the F-distribution
+# [8-9] Simulation of the F-distribution with degrees of freedoms
 #' @title Simulation of the F-distribution
 #' @description Simulation of the F-distribution
 #' @param nu1 Numerator degree of freedom, Default: 5
@@ -1602,12 +1602,12 @@ f.quant <- function(nu1, nu2, pv, prt=TRUE, dig=4, ws=c(7,4), PDF=TRUE, ...) {
 #' @param dig Number of digits below the decimal point, Default: 4
 #' @return None.
 #' @examples
-#' fdist.sim(nu1=8, nu2=5)
+#' fpdf.sim(nu1=8, nu2=5)
 #'
-#' fdist.sim(50, 50, ng=100, xp=1:5/2)
-#' @rdname fdist.sim
+#' fpdf.sim(50, 50, ng=100, xp=1:5/2)
+#' @rdname fpdf.sim
 #' @export
-fdist.sim <- function(nu1=5, nu2=5, N=10000, ng=250, seed=9857, xp=1:9, dig=4) {
+fpdf.sim <- function(nu1=5, nu2=5, N=10000, ng=250, seed=9857, xp=1:9, dig=4) {
     # Generate random numbers
     set.seed(seed)
     dat1 <- rchisq(N, nu1)

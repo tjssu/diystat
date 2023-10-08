@@ -30,7 +30,7 @@ Matrix of multinomial PDF
 PDF Plots, Expectations, and Probabilities of Multinomial Distribution.
 }
 \examples{
-Comparing four multinomial distributions
+# Comparing four multinomial distributions
 ps <- matrix(c(1,1,8, 1,5,4, 4,4,2, 1,1,1), nrow=4, ncol=3, byrow=T)
 multinom.plot(ps, 5)
 multinom.plot(ps, 5, prt="var")

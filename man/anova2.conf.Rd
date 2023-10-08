@@ -33,11 +33,14 @@ f1 <- c(rep(100,6), rep(150,6), rep(200,6), rep(250,6))
 f2 <- rep(c(1,1,2,2,3,3), 4)
 Temp <- as.factor(f1)
 Press <- as.factor(paste0(f2, "Psig"))
+# [1] Formula input
 anova2.conf(Yield ~ Temp * Press)
 
+# [2] anova2.fit object input
 bb <- anova2.fit(Yield ~ Temp * Press)
 anova2.conf(bb)
 
+# [3] aov (lm) object input
 ee <- aov(Yield ~ Temp * Press)
 anova2.conf(ee)
 
@@ -45,11 +48,14 @@ anova2.conf(ee)
 Yield1 <- c(77.5,80.0,89.0,80.5, 80.0,85.0,92.5,84.5, 84.0,88.5,87.0,76.5)
 Temp1 <- c(100,150,200,250, 100,150,200,250, 100,150,200,250)
 Press1 <- c(1,1,1,1, 2,2,2,2 ,3,3,3,3)
-anova2.conf(Yield1 ~ Temp1 * Press1)
+# [1] Formula input
+anova2.conf(Yield1 ~ Temp1 + Press1)
 
+# [2] anova2.fit object input, checking interaction
 cc <- anova2.fit(Yield1 ~ Temp1 * Press1)
 anova2.conf(cc)
 
+# [3] aov (lm) object input
 Temp.f <- as.factor(Temp1)
 Press.f <- as.factor(Press1)
 ff <- aov(Yield1 ~ Temp.f + Press.f)

@@ -43,6 +43,8 @@ anova1.diff(aa)
 Temp <- as.factor(Temp)
 dd <- aov(Yield ~ Temp)
 anova1.diff(dd)
+
+# Tukey's HSD intervals
 anova1.diff(dd, ci="hsd")
 anova1.diff(dd, ci="both")
 }

@@ -28,7 +28,7 @@ None.
 Correlation Coefficients and Scatter Plots of Discrete Random variables
 }
 \examples{
-S <- prob::rolldie(4)
+S <- rolldie2(4)
 item <- c("Mean", "Median", "R-mean", "Range")
 X <- list()
 X[[1]] <- apply(S, 1, mean)

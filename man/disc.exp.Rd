@@ -29,7 +29,7 @@ Expected Values of a Discrete Random Variable
 }
 \examples{
 S <- tosscoin2(10)
-X <- apply(S,1,\(x) sum(x=="H"))
+X <- apply(S, 1, function(x) sum(x=="H"))
 # Using the raw random variable
 disc.exp(X, ws=c(7,4))
 # Using the frequency table
@@ -37,7 +37,7 @@ x <- table(X)
 disc.exp(x, ws=c(7,4))
 
 # Using the PDF: B(20, 0.5)
-x <- (0:20); y <- x^2
+x <- (0:20); y <- "x^2"
 fun <- function(v) dbinom(v, 20, 0.5)
 disc.exp(fun, x, y, prt="var", ws=c(7,4), cex=0.6)
 }
