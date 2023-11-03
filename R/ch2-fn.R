@@ -113,11 +113,12 @@ ch2.man <- function(fn=0) {
     }
     if (8 %in% fn) {
         cat("[8] Calculate Measures of Location\n")
-        cat("location.est(x, tr=0.1, detail=FALSE, dig=4)\n")
+        cat("location.est(x, tr=0.1, mode=\"near\", detail=FALSE, dig=4)\n")
         cat("[Mandatory Input]--------------------------\n")
         cat("x  \t Data vector or matrix.\n")
         cat("[Optional Input]--------------------------\n")
         cat("tr \t Trim proportion of the trimmed mean, Default: 0.1.\n")
+        cat("mode\t Selection of the mode, c(\"near\", \"first\", \"last\").\n")
         cat("detail\t Logical: print detailed output? Default: FALSE.\n")
         cat("dig \t Number of decimal places, Default: 4.\n")
     }
@@ -679,8 +680,8 @@ scat.lm <- function(x, y, data, dig=2, ws, ...) {
     a <- sr$coef[[1]]
     sign <- ifelse(b < 0, "-", "+")
   # Legend postion
-    xm <- (min(x, na.rm=TRUE)+max(x, na.rm=TRUE))/2
-    ym <- (min(y, na.rm=TRUE)+max(y, na.rm=TRUE))/2
+    xm <- (min(x, na.rm=TRUE) + max(x, na.rm=TRUE))/2
+    ym <- (min(y, na.rm=TRUE) + max(y, na.rm=TRUE))/2
     nq11 <- sum(x < xm & y < ym, na.rm=TRUE)
     nq12 <- sum(x < xm & y > ym, na.rm=TRUE)
     nq21 <- sum(x > xm & y < ym, na.rm=TRUE)
@@ -707,7 +708,8 @@ scat.lm <- function(x, y, data, dig=2, ws, ...) {
 #' sample mean, median, mode, geometric mean, harmonic mean, and trimmed mean.
 #' @param x Vector of input data.
 #' @param tr Treaming ratio. Default: 0.1.
-#' @param detail Print detailed output? Default: FALSE.
+#' @param mode Selection of the mode, c("first", "last", "near").
+#' @param detail Logical: print detailed output? Default: FALSE.
 #' @param dig The number of decimal places. Default: 4.
 #' @return Six measures of location.
 #' @keywords Ch2. Descriptive Statistics
@@ -718,47 +720,57 @@ scat.lm <- function(x, y, data, dig=2, ws, ...) {
 #' x <- round(rnorm(100, 10, 2), 1)
 #' location.est(x, detail=T)
 #' @export
-location.est <- function(x, tr=0.1, detail=FALSE, dig=4) {
-    rdd <- function(x) round(x, dig)
+location.est <- function(x, tr=0.1, mode="first", detail=FALSE, dig=4) {
+    rdd <- function(x) format(round(x, dig), nsmall=dig)
     n <- length(x)
     numNA <- sum(is.na(x))
     if (numNA > 0) {
         whNA <- which(is.na(x))
         n0 <- n
         n <- n0 - numNA      
-        cat("Missing valus are in postion ", whNA, "\n")
+        cat("Warning: Missing valus are in postion ", whNA, "\n")
 	x <- x[!is.na(x)]
     }
-    # mean --> mean( ) function
+  # mean ==> mean( ) function
     xmean <- mean(x)
-    # median --> median( ) function
+  # median ==> median( ) function
     xmed <- median(x)
-    # frequency --> table( ) function
+  # frequency ==> table( ) function
     tabx <- table(x)
-    # mode --> value with maximum frequency in table
-    xmode <- as.numeric(names(tabx[tabx==max(tabx)]))
-    if (max(tabx)==1) xmode<-NA
-    # define function for geometric mean
-    gm_mean <- function(a) {prod(a)^(1/length(a))}
-    # geometric mean --> use previously defined gm_mean( ) function
-    gmean <- gm_mean(x)
-    # define function for harmonic mean
-    hmean <- 1/mean(1/x)
-    # trimmed mean (10%) --> mean(x, trim) function
+  # mode ==> value with maximum frequency in table
+    allmode <- as.numeric(names(tabx[tabx==max(tabx)]))
+    if (max(tabx)==1) {
+        xmode <- NA
+    } else if (length(allmode)>1) {
+        cat("Warning: Multiple modes exist: ", allmode, "\n")
+        if (mode=="first") {
+            xmode <- allmode[1]
+        } else if (mode=="last") {
+            xmode <- allmode[length(allmode)]
+        } else {
+            dist <- abs(allmode - xmean)
+            xmode <- allmode[which.min(dist)]
+        }
+    } else {xmode <- allmode}
+  # Check zero values for geometric/harmonic mean
+    whZero <- which(x==0)
+    if (length(whZero>0)) {
+        cat("Warning (Geometric/Harmonic mean): Exclude zero values at\n")
+        print(whZero)
+        xnz <- x[-whZero]
+    } else {xnz <- x}
+  # Geometric mean: prod(a)^(1/length(a))
+    gm_mean <- function(a) exp(sum(log(a))/length(a))
+    gmean <- gm_mean(xnz)
+  # Harmonic mean
+    hmean <- 1/mean(1/xnz)
+  # Trimmed mean ==> mean(x, trim) function
     tmean <- mean(x, trim=tr)
 
-    # display output --> cat( ) function
-    if (length(xmode)==1) {
-        res <- c(xmean, xmed, xmode, gmean, hmean, tmean)
-        names(res) <- c("Mean", "Median", "Mode", "Geom-M", "Harm-M", "Trim-M")
-    } else {
-        res <- c(xmean, xmed, gmean, hmean, tmean)
-        names(res) <- c("Mean", "Median", "Geom-M", "Harm-M", "Trim-M")
-        res <- list(location_est=res, mode_est=xmode)
-    }
-    if (detail==FALSE) {
-        print(res)
-    }
+  # Summary result
+    res <- c(xmean, xmed, xmode, gmean, hmean, tmean)
+    names(res) <- c("Mean", "Median", "Mode", "Geom-M", "Harm-M", "Trim-M")
+  # Detailed output
     if (detail==TRUE) {
         nt <- floor(n*tr)
         sumt <- sum(sort(x)[(nt+1):(n-nt)])
@@ -766,13 +778,13 @@ location.est <- function(x, tr=0.1, detail=FALSE, dig=4) {
         cat("Calculation in Detail --------------------------------------------",
         "\n(1) Mean =", paste0(rdd(sum(x)), "/", n), "=", rdd(xmean),
         "\n(2) Median =", paste0("x(", (n+1)/2, ") ="), rdd(xmed),
-        "\n(3) Mode =", xmode, paste0("(", max(tabx), " times)"),
-        "\n(4) Geom. Mean =", paste0("(",format(prod(x), F,dig),
-            ")^(1/", n, ") ="), rdd(gmean),
-        "\n(5) Harm. Mean =", paste0("1/(", rdd(mean(1/x)), ") ="), rdd(hmean),
+        "\n(3) Mode =", allmode, paste0("(", max(tabx), " times)"),
+        "\n(4) Geom. Mean =", paste0("exp(", rdd(sum(log(xnz))),
+            "/", length(xnz), ") ="), rdd(gmean),
+        "\n(5) Harm. Mean =", paste0("1/(", rdd(mean(1/xnz)), ") ="), rdd(hmean),
         "\n(6)", paste0("Trim. Mean(",tr,") = ", rdd(sumt), "/", n2), "=", rdd(tmean), "\n")
-    }
-    invisible(res)
+        invisible(res)
+    } else return(res)
 }
 
 # [2-9] Calculate Measures of Dispersion
@@ -781,7 +793,7 @@ location.est <- function(x, tr=0.1, detail=FALSE, dig=4) {
 #'
 #' To calculate spread estimates.
 #' @param x Vector of input data.
-#' @param detail Print detailed output? Default: FALSE.
+#' @param detail Logical: print detailed output? Default: FALSE.
 #' @param dig The number of decimal places. Default: 4.
 #' @return Five measures of dispersion.
 #' @keywords Ch2. Descriptive Statistics
@@ -793,6 +805,8 @@ location.est <- function(x, tr=0.1, detail=FALSE, dig=4) {
 #' spread.est(x, detail=T)
 #' @export
 spread.est <- function(x, detail=FALSE, dig=4) {
+    rdd <- function(x) format(round(x, dig), nsmall=dig)
+
     if (is.matrix(x)) x <- as.vector(x)
     n <- length(x)
     numNA <- sum(is.na(x))
@@ -800,40 +814,37 @@ spread.est <- function(x, detail=FALSE, dig=4) {
         whNA <- which(is.na(x))
         n0 <- n
         n <- n0 - numNA
-        cat("Missing valus are in postion ", whNA, "\n")
+        cat("Warning: Missing valus are in postion ", whNA, "\n")
 	x <- x[!is.na(x)]
     }
 
-    # sample variance --> var( ) function
+  # Sample variance ==> var( ) function
     xvar <- var(x)
-    # standard deviation --> sd( ) function
+  # Standard deviation ==> sd( ) function
     xsd <- sd(x)
-    # range --> max( )-min( ) function
+  # Range ==> max( )-min( ) function
     xrng <- max(x) - min(x)
-    # inter-quartile range --> IQR( ) function
+  # Inter-quartile range ==> IQR( ) function
     xiqr <- IQR(x)
-    # coefficient of variation --> sd( ) / mean( ) function
+  # Coefficient of variation ==> sd( ) / mean( ) function
     xcv <- xsd / mean(x)
 
-    # display output
+  # Summary result
     res <- c(xvar, xsd, xrng, xiqr, xcv)
     names(res) <- c("Variance", "Std-Dev", "Range", "IQR", "CoV")
 
-    if (detail==FALSE) {
-        print(res)
-    }
     if (detail==TRUE) {
         cat("Calculation in Detail --------------------------------------------",
-        "\n(1) Variance =", paste0("(", round(sum(x^2),dig)," - ", round(abs(sum(x)),dig),
-            "\U00B2/", n, ") /", n-1), "=", round(xvar,dig),
-        "\n(2) Stand. Dev. =", paste0("\U221A(", round(xvar,dig), ") ="), round(xsd,dig),
-        "\n(3) Range =", round(max(x),dig), "-", paste0("(",round(min(x),dig),")"),
-            "=", round(xrng,dig),
-        "\n(4) IQR =", round(quantile(x, 0.75),dig), "-",
-            paste0("(",round(quantile(x, 0.25),dig),")"), "=", round(xiqr,dig),
-        "\n(5) CoV =", round(xsd,dig), "/", paste0("(",round(mean(x),dig),")"),
-            "=", round(xcv,dig), "\n")
-    }
-    invisible(res)
+        "\n(1) Variance =", paste0("(", rdd(sum(x^2))," - ", rdd(abs(sum(x))),
+            "\U00B2/", n, ") /", n-1), "=", rdd(xvar),
+        "\n(2) Stand. Dev. =", paste0("\U221A(", rdd(xvar), ") ="), rdd(xsd),
+        "\n(3) Range =", rdd(max(x)), "-", paste0("(",rdd(min(x)),")"),
+            "=", rdd(xrng),
+        "\n(4) IQR =", rdd(quantile(x, 0.75)), "-",
+            paste0("(",rdd(quantile(x, 0.25)),")"), "=", rdd(xiqr),
+        "\n(5) CoV =", rdd(xsd), "/", paste0("(",rdd(mean(x)),")"),
+            "=", rdd(xcv), "\n")
+        invisible(res)
+    } else return(res)
 }
 

@@ -785,7 +785,8 @@ anova2.fit <- function(form, data, alp=0.05, dig=4, ws=c(7,4), dp=1:2, ...)
     print(dum)
 
   # Prior investigation of data
-    if (is.numeric(ws) && inter) {
+    ## [Change] if (is.numeric(ws) && inter) {
+    if (is.numeric(ws)) {
       # Colors
         if (m2<6) {
             dcol <- c("black", "red", "blue", "green4", "purple")
@@ -976,10 +977,13 @@ anova2.conf <- function(f, data, alp=0.05, maxim=TRUE, dig=4, ws=c(7,4), main)
     } else {    
         ye <- outer(ym2, ym1, "+") - mean(y)
         mse <- summary(an2)[[1]]$Mean[3]
-        se <- sqrt(mse*(1/m1+1/m2-1/(m1*m2)))
-        dfe <- (m1-1)*(m2-1)
+        ## [Err] se <- sqrt(mse*(1/m1+1/m2-1/(m1*m2)))
+        se <- sqrt(mse*(1/na + 1/nb - 1/nn))
+        ## [Err] dfe <- (m1-1)*(m2-1)
+        dfe <- nn - m1 - m2 + 1
         fse <- paste0("\U221A(", round(mse,dig),
-            "\U00D7(1/",m1,"+1/",m2,"-1/",m1*m2,"))")
+            "\U00D7(1/", na, "+1/", nb, "-1/", nn,"))")
+        ## [Err]   "\U00D7(1/",m1,"+1/",m2,"-1/",m1*m2,"))")
     }
 
     if (maxim) {

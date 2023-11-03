@@ -888,7 +888,7 @@ corr.tsp <- function(x, y, r0=0, alp=0.05, alt="two", type="s", dig=4, ws=c(8,4)
       # Correlation test by cortest.sum( ) function
         cortest.sum(rxy2, nn, r0, alt, TRUE, alp, dig)
         if (type=="s") {
-            cat(paste0("[Pearson] Corr = ", myf1(rxy), ", T0 = ",
+            cat(paste0("[Pearson] Corr = ", myf1(rxy), ", Stat = ",
                 myf1(pcor[3]), ", p-value = ", myf1(pcor[4])), "\n")
         }
     }
@@ -1406,11 +1406,16 @@ kruskal.tsp <- function(x, y, dig=4, ws="n") {
     ssm <- rs^2/ni
   # [Correction]
     ff <- as.factor(y)
+    lv <- levels(ff)
     kk <- nlevels(ff)
     rtab <- matrix(0, kk, max(ni))
-    for (k in 1:kk) rtab[k, 1:ni[k]] <- rx[which(ff==k)]
+    for (k in 1:kk) rtab[k, 1:ni[k]] <- rx[which(ff==lv[k])]
     rtab <- cbind(rtab, rs, ssm)
-    rownames(rtab) <- paste0("Group", 1:kk)
+    if (is.numeric(y)) {
+        rownames(rtab) <- paste0("Group", 1:kk)
+    } else {
+        rownames(rtab) <- lv
+    }
     colnames(rtab) <- c(1:max(ni), "Sum", "SS-Avg")
 
   # Print test results
