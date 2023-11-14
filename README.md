@@ -1,5 +1,5 @@
 # diystat
-Do It Yourself Intoductory Probability and Statistics
+Do It Yourself Introductory Probability and Statistics
 
 To install the "diystat" package, you need to install the "devtools" package first by typing
 
@@ -9,15 +9,15 @@ Then you can install the "diystat" package by typing
 
 > library(devtools)
 
-> install_github("diystat")
+> install_github("tjssu/diystat")
 
 Along with the "diystat" package, the author has published a text book entitled "DIY Introductory Statistics", 
-which is designed not to read but to create by youself. 
+which is designed not to read but to create by yourself. 
 His goal is for every student to have fun solving statistical problems 
 rather than plowing through dense and unengaging statistical textbooks.
 Once completing your job, you will obtain clear and intuitive understading of data analysis with statistics.
 
-If you encounter any problem, please feel free to contact
+If you encounter any problem, please feel free to contact me via:
 
 e-mail: bigtgm@naver.com or
 
